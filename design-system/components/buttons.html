@@ -1,0 +1,33 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CloudThrift — Buttons (Dark)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; background: #070B0F; margin: 0; padding: 32px;
+         display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 9px; border: 0; cursor: pointer; font: inherit; font-weight: 600;
+         text-decoration: none; border-radius: 999px; transition: all .18s; }
+  .accent { background: #3CA79D; color: #06110F; padding: 12px 22px; font-size: 15px; }
+  .accent:hover { background: #4DBBB0; box-shadow: 0 0 28px rgba(60,167,157,0.35); }
+  .ghost { background: transparent; color: #E6EBF0; border: 1px solid rgba(230,235,240,0.14); padding: 13px 26px; font-size: 15px; }
+  .ghost:hover { border-color: #3CA79D; color: #3CA79D; }
+  .lg { padding: 15px 30px; font-size: 16px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 999px;
+          background: rgba(60,167,157,0.14); border: 1px solid rgba(60,167,157,0.3); color: #3CA79D;
+          font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  .navlink { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .14em;
+             text-transform: uppercase; color: #8A99A8; text-decoration: none; padding: 9px 13px; border-radius: 999px; }
+  .navlink:hover { color: #E6EBF0; background: rgba(230,235,240,0.05); }
+</style>
+</head>
+<body>
+<button class="btn accent lg">Start Saving Today ›</button>
+<button class="btn accent">Get a Free Audit</button>
+<button class="btn ghost lg">See How It Works</button>
+<span class="pill">↘ Reduce your cloud bill by up to 40%</span>
+<a class="navlink" href="#">Services</a>
+</body>
+</html>

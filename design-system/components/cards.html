@@ -1,0 +1,42 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CloudThrift — Cards (Dark)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; background: #070B0F; margin: 0; padding: 32px;
+         display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 1060px; color: #E6EBF0; }
+  .card { background: rgba(230,235,240,0.03); border: 1px solid rgba(230,235,240,0.08); border-radius: 24px; padding: 28px; }
+  .card:hover { border-color: rgba(60,167,157,0.4); }
+  .card h3 { font-size: 17px; font-weight: 700; margin: 18px 0 10px; }
+  .card p { font-size: 14px; color: #8A99A8; line-height: 1.6; margin: 0; }
+  .icon-badge { width: 42px; height: 42px; border-radius: 12px; background: rgba(60,167,157,0.14); color: #3CA79D;
+                border: 1px solid rgba(60,167,157,0.25); display: flex; align-items: center; justify-content: center; font-size: 19px; }
+  .step { background: #0D151C; border: 1px solid rgba(230,235,240,0.14); border-radius: 24px; padding: 30px; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; color: #3CA79D; text-transform: uppercase; }
+  .step-num b { display: block; font-size: 46px; font-weight: 800; color: rgba(230,235,240,0.1); line-height: 1; margin: 8px 0 12px; }
+  .step h3 { font-size: 20px; font-weight: 700; margin: 0 0 10px; }
+  .step p { font-size: 14px; color: #8A99A8; line-height: 1.6; margin: 0; }
+  .stat { text-align: center; padding: 30px 16px; border: 1px solid rgba(230,235,240,0.08); border-radius: 24px;
+          background: rgba(230,235,240,0.03); }
+  .stat b { display: block; font-size: 38px; font-weight: 800; letter-spacing: -0.03em; }
+  .stat b i { font-style: normal; color: #3CA79D; }
+  .stat span { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #8A99A8; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon-badge">▥</div>
+  <h3>Expert Audit &amp; FinOps</h3>
+  <p>Deep-dive analysis of your billing data to uncover orphaned resources, over-provisioned instances, and architectural inefficiencies.</p>
+</div>
+<div class="step">
+  <span class="step-num">Step — 5 minutes<b>01</b></span>
+  <h3>Deploy a read-only role</h3>
+  <p>Launch our CloudFormation template — a read-only IAM role locked with a unique ExternalId. No write permissions exist.</p>
+</div>
+<div class="stat"><b><i>40</i>%</b><span>typical overspend found</span></div>
+</body>
+</html>

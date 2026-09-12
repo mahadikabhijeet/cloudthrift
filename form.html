@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Your Free Audit — CloudThrift</title>
+<meta name="description" content="Tell us about your cloud setup and we'll send your free FinOps audit findings within 48 hours.">
+<link rel="icon" type="image/svg+xml" href="assets/mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#070B0F; --panel:#0D151C; --panel-2:#111C25;
+    --accent:#3CA79D; --accent-deep:#2E7E78;
+    --ink:#E6EBF0; --muted:#8A99A8; --line:#1C2A35;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--canvas); color:var(--ink);
+    font-family:Inter,system-ui,sans-serif; line-height:1.5;
+    min-height:100vh; display:flex; flex-direction:column;
+    background-image:radial-gradient(1200px 600px at 70% -10%, rgba(60,167,157,.10), transparent 60%);
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .topbar{padding:22px 24px;border-bottom:1px solid var(--line)}
+  .topbar .container{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:700;font-size:18px}
+  .brand img{height:26px}
+  .back{color:var(--muted);font-size:14px}
+  main{flex:1;display:flex;justify-content:center;padding:40px 20px}
+  .wrap{width:100%;max-width:620px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px}
+  .lede{color:var(--muted);margin-bottom:28px;font-size:15px}
+  form{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px}
+  .field{margin-bottom:18px}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:var(--ink)}
+  label .req{color:var(--accent)}
+  input,select,textarea{
+    width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
+    padding:12px 13px;color:var(--ink);font-family:inherit;font-size:14px;transition:border-color .15s
+  }
+  input::placeholder,textarea::placeholder{color:#5c6b78}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  textarea{resize:vertical;min-height:84px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:520px){.row{grid-template-columns:1fr}h1{font-size:25px}}
+  button{
+    width:100%;margin-top:8px;background:var(--accent);color:#06110F;border:0;border-radius:12px;
+    padding:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s
+  }
+  button:hover{background:#48bcb1}
+  button:disabled{opacity:.6;cursor:not-allowed}
+  .foot-note{margin-top:20px;text-align:center;color:var(--muted);font-size:13px}
+  .status{margin-top:16px;padding:13px 15px;border-radius:10px;font-size:14px;display:none}
+  .status.ok{display:block;background:rgba(60,167,157,.12);border:1px solid var(--accent-deep);color:var(--ink)}
+  .status.err{display:block;background:rgba(200,80,80,.10);border:1px solid #7d3a3a;color:var(--ink)}
+  .trust{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <a class="brand" href="index.html"><img src="assets/logo-dark.svg" alt="cloudthrift.io">
+    </a>
+    <a class="back" href="index.html">&larr; Back to site</a>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Free Audit Request</p>
+    <h1>Let's find your hidden cloud savings.</h1>
+    <p class="lede">Tell us a little about your setup. We'll review it and send your findings within 48 hours —
+       read-only access, no commitment.</p>
+
+    <!-- ================================================================
+         SETUP (one-time): submissions go to YOUR OWN AWS — no third party.
+         1. Deploy pillar-a/cloudformation/lead-capture.yaml (see pillar-a/docs/LEAD_CAPTURE.md).
+         2. Copy the stack's ApiEndpoint output and paste it into LEAD_API in the <script> below,
+            replacing REPLACE-WITH-API-ENDPOINT.
+         Until then, submitting shows the fallback email instead of sending.
+         ================================================================ -->
+    <form id="auditForm">
+      <!-- honeypot spam trap -->
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+
+      <div class="row">
+        <div class="field">
+          <label>Full name <span class="req">*</span></label>
+          <input type="text" name="name" required placeholder="Jane Doe">
+        </div>
+        <div class="field">
+          <label>Work email <span class="req">*</span></label>
+          <input type="email" name="email" required placeholder="jane@company.com">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Company <span class="req">*</span></label>
+        <input type="text" name="company" required placeholder="Company name">
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Monthly cloud spend (ballpark)</label>
+          <select name="monthly_spend">
+            <option value="">Select…</option>
+            <option>Under $5k</option>
+            <option>$5k – $25k</option>
+            <option>$25k – $100k</option>
+            <option>$100k+</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>AWS accounts</label>
+          <select name="aws_accounts">
+            <option value="">Select…</option>
+            <option>Single account</option>
+            <option>Multiple in an Organization</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>How many AWS regions?</label>
+          <select name="region_count">
+            <option value="">Select…</option>
+            <option>1</option>
+            <option>2–3</option>
+            <option>4–6</option>
+            <option>7+</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Biggest cost concern</label>
+          <select name="cost_concern">
+            <option value="">Select…</option>
+            <option>Compute</option>
+            <option>Database</option>
+            <option>Networking</option>
+            <option>Storage</option>
+            <option>Not sure / all of it</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Which regions? <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+        <input type="text" name="regions" placeholder="e.g. us-east-1, ap-south-1 — only if you know them offhand">
+      </div>
+
+      <div class="field">
+        <label>What prompted this? <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+        <textarea name="context" placeholder="Budget review, board pressure, a bill that jumped…"></textarea>
+      </div>
+
+      <button type="submit" id="submitBtn">Request my free audit</button>
+      <div class="status" id="status"></div>
+      <p class="trust">Read-only access only. We never see write permissions. Your details are used solely to prepare your audit.</p>
+    </form>
+
+    <p class="foot-note">Prefer to just email us? <a href="mailto:hello@cloudthrift.io">hello@cloudthrift.io</a></p>
+  </div>
+</main>
+
+<script>
+  // Your own AWS lead-capture API (API Gateway -> Lambda -> S3). Paste the
+  // CloudFormation stack's ApiEndpoint output here after deploying lead-capture.yaml.
+  const PROD_LEAD_API = 'REPLACE-WITH-API-ENDPOINT';
+  // Local dev only: on localhost you can point the form at a mock backend with
+  // ?api=http://localhost:8787/lead — ignored anywhere else, so production stays locked.
+  const _isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const _override = new URLSearchParams(location.search).get('api');
+  const LEAD_API = (_isLocal && _override) ? _override : PROD_LEAD_API;
+
+  const form = document.getElementById('auditForm');
+  const statusEl = document.getElementById('status');
+  const btn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // If the API endpoint isn't wired yet, don't pretend to send —
+    // guide the visitor to the fallback email so nothing is silently lost.
+    if (LEAD_API.startsWith('REPLACE-')) {
+      statusEl.className = 'status err';
+      statusEl.innerHTML = 'This form isn\'t connected yet. Please email us directly at ' +
+        '<a href="mailto:hello@cloudthrift.io">hello@cloudthrift.io</a> and we\'ll take it from there.';
+      return;
+    }
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      const res = await fetch(LEAD_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        form.reset();
+        statusEl.className = 'status ok';
+        statusEl.textContent = 'Thanks — got it. We\'ll send your audit findings within 48 hours.';
+        btn.style.display = 'none';
+      } else { throw new Error(data.message || 'Submission failed'); }
+    } catch (err) {
+      statusEl.className = 'status err';
+      statusEl.innerHTML = 'Something went wrong. Please email us at ' +
+        '<a href="mailto:hello@cloudthrift.io">hello@cloudthrift.io</a>.';
+      btn.disabled = false; btn.textContent = 'Request my free audit';
+    }
+  });
+</script>
+</body>
+</html>

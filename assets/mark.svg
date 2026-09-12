@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 18 372 254" role="img" aria-label="cloudthrift mark">
+  <path d="M215,205 C185,205 160,180 160,148 C160,118 182,95 212,92 C220,60 250,38 285,38 C315,38 340,54 352,80 C362,72 375,68 388,68 C420,68 446,92 450,124 C475,130 492,152 492,178 C492,190 488,200 481,208"
+        fill="none" stroke="#3CA79D" stroke-width="14" stroke-linecap="round"/>
+  <g stroke="#E6EBF0" stroke-width="5" stroke-linecap="round">
+    <line x1="252" y1="122" x2="302" y2="87"/><line x1="302" y1="87" x2="352" y2="117"/>
+    <line x1="352" y1="117" x2="400" y2="92"/><line x1="400" y1="92" x2="430" y2="132"/>
+    <line x1="252" y1="122" x2="352" y2="117"/>
+  </g>
+  <g fill="#E6EBF0">
+    <circle cx="252" cy="122" r="9"/><circle cx="302" cy="87" r="9"/><circle cx="352" cy="117" r="9"/>
+    <circle cx="400" cy="92" r="9"/><circle cx="430" cy="132" r="9"/>
+  </g>
+  <g fill="#3CA79D">
+    <rect x="272" y="142" width="30" height="110" rx="4"/><rect x="312" y="162" width="30" height="90" rx="4"/>
+    <rect x="352" y="182" width="30" height="70" rx="4"/><rect x="392" y="202" width="30" height="50" rx="4"/>
+  </g>
+</svg>
