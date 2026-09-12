@@ -188,37 +188,61 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // If the API endpoint isn't wired yet, don't pretend to send —
-    // guide the visitor to the fallback email so nothing is silently lost.
-    if (LEAD_API.startsWith('REPLACE-')) {
-      statusEl.className = 'status err';
-      statusEl.innerHTML = 'This form isn\'t connected yet. Please email us directly at ' +
-        '<a href="mailto:hello@cloudthrift.io">hello@cloudthrift.io</a> and we\'ll take it from there.';
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    // If API endpoint is configured (e.g., AWS or local mock), send via HTTP fetch
+    if (!LEAD_API.startsWith('REPLACE-')) {
+      btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const res = await fetch(LEAD_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          form.reset();
+          statusEl.className = 'status ok';
+          statusEl.textContent = 'Thanks — got it. We\'ll send your audit findings within 48 hours.';
+          btn.style.display = 'none';
+        } else { throw new Error(data.message || 'Submission failed'); }
+      } catch (err) {
+        statusEl.className = 'status err';
+        statusEl.innerHTML = 'Something went wrong. Please email us directly at ' +
+          '<a href="mailto:hello@cloudthrift.io">hello@cloudthrift.io</a>.';
+        btn.disabled = false; btn.textContent = 'Request my free audit';
+      }
       return;
     }
 
-    const payload = Object.fromEntries(new FormData(form).entries());
+    // Direct Email UX: Pre-fill visitor's email client draft with all form fields
+    const subject = `Free AWS Audit Request — ${payload.company || payload.name || 'CloudThrift'}`;
+    const bodyLines = [
+      'Hi CloudThrift Team,',
+      '',
+      'I would like to request a free AWS FinOps cost audit.',
+      '',
+      '--- My Audit Details ---',
+      `• Full Name: ${payload.name || ''}`,
+      `• Work Email: ${payload.email || ''}`,
+      `• Company: ${payload.company || ''}`,
+      `• Monthly Cloud Spend: ${payload.monthly_spend || 'N/A'}`,
+      `• AWS Accounts: ${payload.aws_accounts || 'N/A'}`,
+      `• Region Count: ${payload.region_count || 'N/A'}`,
+      `• Specific Regions: ${payload.regions || 'N/A'}`,
+      `• Biggest Cost Concern: ${payload.cost_concern || 'N/A'}`,
+      `• Context / Notes: ${payload.context || 'N/A'}`,
+      '',
+      'Please let me know the next steps!'
+    ];
 
-    btn.disabled = true; btn.textContent = 'Sending…';
-    try {
-      const res = await fetch(LEAD_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (data.success) {
-        form.reset();
-        statusEl.className = 'status ok';
-        statusEl.textContent = 'Thanks — got it. We\'ll send your audit findings within 48 hours.';
-        btn.style.display = 'none';
-      } else { throw new Error(data.message || 'Submission failed'); }
-    } catch (err) {
-      statusEl.className = 'status err';
-      statusEl.innerHTML = 'Something went wrong. Please email us at ' +
-        '<a href="mailto:hello@cloudthrift.io">hello@cloudthrift.io</a>.';
-      btn.disabled = false; btn.textContent = 'Request my free audit';
-    }
+    const mailtoUrl = `mailto:hello@cloudthrift.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+
+    statusEl.className = 'status ok';
+    statusEl.innerHTML = 'Opening your email client with your pre-filled audit request...<br>' +
+      'If it didn\'t open automatically, <a href="' + mailtoUrl + '" style="font-weight:700;text-decoration:underline">click here to send email</a>.';
+
+    window.location.href = mailtoUrl;
   });
 </script>
 </body>
