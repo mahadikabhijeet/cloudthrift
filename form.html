@@ -174,7 +174,7 @@
 <script>
   // Your own AWS lead-capture API (API Gateway -> Lambda -> S3). Paste the
   // CloudFormation stack's ApiEndpoint output here after deploying lead-capture.yaml.
-  const PROD_LEAD_API = 'REPLACE-WITH-API-ENDPOINT';
+  const PROD_LEAD_API = 'https://ressr8q191.execute-api.us-east-1.amazonaws.com/lead';
   // Local dev only: on localhost you can point the form at a mock backend with
   // ?api=http://localhost:8787/lead — ignored anywhere else, so production stays locked.
   const _isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
