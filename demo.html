@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> — FinOps Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#f97316', 600: '#ea580c' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .severity-critical { @apply bg-red-900/40 text-red-300 ring-1 ring-red-700; }
+    .severity-high     { @apply bg-orange-900/40 text-orange-300 ring-1 ring-orange-700; }
+    .severity-medium   { @apply bg-yellow-900/40 text-yellow-300 ring-1 ring-yellow-700; }
+    .severity-low      { @apply bg-blue-900/40 text-blue-300 ring-1 ring-blue-700; }
+    .tier-quick_win    { @apply bg-emerald-900/40 text-emerald-300 ring-1 ring-emerald-700; }
+    .tier-this_month   { @apply bg-indigo-900/40 text-indigo-300 ring-1 ring-indigo-700; }
+    .tier-needs_review { @apply bg-amber-900/40 text-amber-300 ring-1 ring-amber-700; }
+    .tier-later        { @apply bg-gray-800 text-gray-400 ring-1 ring-gray-600; }
+  </style>
+</head>
+<body class="h-full text-gray-100 font-sans">
+
+<!-- BRAND VALUE BANNER -->
+<div style="background: #0C1319; border-bottom: 2px solid #3CA79D; padding: 20px 28px; font-family: 'Inter', -apple-system, sans-serif;">
+  <div style="max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px;">
+    <h2 style="color: #3CA79D; font-size: 1.15rem; font-weight: 700; margin: 0; letter-spacing: -0.025em;">
+      <span style="font-family: 'JetBrains Mono', monospace;">[X-RAY_MODE]</span> The 60-Second Cloud Diagnostic
+    </h2>
+    <p style="color: #E6EBF0; font-size: 0.95rem; margin: 0; line-height: 1.6; max-width: 900px;">
+      <strong style="color: #ffffff;">This is the X-Ray. CloudThrift provides the Surgeon.</strong><br/>
+      This automated dashboard filters 5,000+ noisy AWS Trusted Advisor alerts down to the top zero-risk actions. 
+      But scripts shouldn't execute 3-year Savings Plans. That's why our Senior CloudOps architects map these findings directly to your 12-month business roadmap to execute them safely, with zero downtime.
+    </p>
+  </div>
+</div>
+<!-- END BRAND VALUE BANNER -->
+
+
+
+
+<!-- Nav -->
+<nav class="bg-gray-900 border-b border-gray-800 px-4 sm:px-6 py-3">
+  <div class="flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 sm:gap-3 group min-w-0">
+      <div class="shrink-0 w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white font-bold text-sm">F</div>
+      <span class="text-base sm:text-lg font-semibold text-white group-hover:text-brand-500 transition-colors truncate">FinOps Platform</span>
+    </a>
+    <div class="flex items-center gap-3 sm:gap-6 text-sm text-gray-400 shrink-0 ml-3">
+      <a href="/" class="hover:text-white transition-colors hidden xs:inline">Dashboard</a>
+      <a href="/api/docs" class="hover:text-white transition-colors hidden sm:inline">API</a>
+      <span class="px-2 py-0.5 rounded bg-gray-800 text-xs text-green-400 font-mono">v1.0</span>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-3 sm:px-6 py-5 sm:py-8">
+  
+
+
+
+
+
+
+
+
+<!-- Breadcrumb + header -->
+<div class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6 min-w-0">
+  <a href="/" class="hover:text-white transition-colors shrink-0">Dashboard</a>
+  <span>›</span>
+  <span class="text-gray-300 truncate">Acme Corp (MOCK)</span>
+</div>
+
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+  <div class="min-w-0">
+    <h1 class="text-xl sm:text-2xl font-bold text-white truncate">Acme Corp (MOCK)</h1>
+    <p class="text-gray-400 text-xs mt-1 font-mono truncate">demo-account · 2026-07-24</p>
+  </div>
+  <button
+    onclick="triggerAudit('demo-account')"
+    class="px-4 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium transition-colors self-start sm:self-auto shrink-0"
+  >↻ Re-run Audit</button>
+</div>
+
+<!-- Summary cards -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+  <div class="bg-green-950 rounded-xl border border-green-800 p-4 sm:p-5 col-span-2 sm:col-span-1">
+    <p class="text-xs text-green-500 uppercase tracking-wider mb-1">Monthly Savings</p>
+    <p class="text-2xl sm:text-3xl font-bold text-green-400">$1,512</p>
+    <p class="text-xs text-green-600 mt-1">$18,150 annually</p>
+  </div>
+  
+  
+  <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 cursor-pointer hover:border-red-600 hover:bg-gray-800 transition-colors"
+       onclick="setSevFilter('critical')">
+    <p class="text-xs text-red-400 uppercase tracking-wider mb-1">Critical</p>
+    <p class="text-3xl font-bold text-red-300">2</p>
+    <p class="text-xs text-gray-500 mt-1">findings — click to filter</p>
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 cursor-pointer hover:border-orange-600 hover:bg-gray-800 transition-colors"
+       onclick="setSevFilter('high')">
+    <p class="text-xs text-orange-400 uppercase tracking-wider mb-1">High</p>
+    <p class="text-3xl font-bold text-orange-300">9</p>
+    <p class="text-xs text-gray-500 mt-1">findings — click to filter</p>
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 cursor-pointer hover:border-yellow-600 hover:bg-gray-800 transition-colors"
+       onclick="setSevFilter('medium')">
+    <p class="text-xs text-yellow-400 uppercase tracking-wider mb-1">Medium</p>
+    <p class="text-3xl font-bold text-yellow-300">7</p>
+    <p class="text-xs text-gray-500 mt-1">findings — click to filter</p>
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 cursor-pointer hover:border-blue-600 hover:bg-gray-800 transition-colors"
+       onclick="setSevFilter('low')">
+    <p class="text-xs text-blue-400 uppercase tracking-wider mb-1">Low</p>
+    <p class="text-3xl font-bold text-blue-300">6</p>
+    <p class="text-xs text-gray-500 mt-1">findings — click to filter</p>
+  </div>
+  
+  
+</div>
+
+<!-- Priority tier breakdown -->
+
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-emerald-600 hover:bg-gray-800 transition-colors"
+       onclick="setTierFilter('quick_win')">
+    <p class="text-xs text-gray-500 mb-1">Quick Wins</p>
+    <p class="text-xl font-bold text-white">13</p>
+    <span class="mt-1 inline-block px-2 py-0.5 rounded text-xs font-medium tier-quick_win">quick win</span>
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-emerald-600 hover:bg-gray-800 transition-colors"
+       onclick="setTierFilter('this_month')">
+    <p class="text-xs text-gray-500 mb-1">This Month</p>
+    <p class="text-xl font-bold text-white">1</p>
+    <span class="mt-1 inline-block px-2 py-0.5 rounded text-xs font-medium tier-this_month">this month</span>
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-emerald-600 hover:bg-gray-800 transition-colors"
+       onclick="setTierFilter('needs_review')">
+    <p class="text-xs text-gray-500 mb-1">Needs Review</p>
+    <p class="text-xl font-bold text-white">2</p>
+    <span class="mt-1 inline-block px-2 py-0.5 rounded text-xs font-medium tier-needs_review">needs review</span>
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-emerald-600 hover:bg-gray-800 transition-colors"
+       onclick="setTierFilter('later')">
+    <p class="text-xs text-gray-500 mb-1">Later</p>
+    <p class="text-xl font-bold text-white">8</p>
+    <span class="mt-1 inline-block px-2 py-0.5 rounded text-xs font-medium tier-later">later</span>
+  </div>
+  
+  
+</div>
+
+
+<!-- Category breakdown -->
+
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-indigo-600 hover:bg-gray-800 transition-colors"
+       onclick="setCatFilter('infra_hygiene')">
+    <p class="text-xs text-gray-500 mb-1">Infra Hygiene</p>
+    <p class="text-xl font-bold text-white">7</p>
+    
+    <p class="text-xs text-green-500 mt-0.5">$124/mo</p>
+    
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-indigo-600 hover:bg-gray-800 transition-colors"
+       onclick="setCatFilter('compute_strategy')">
+    <p class="text-xs text-gray-500 mb-1">Compute</p>
+    <p class="text-xl font-bold text-white">5</p>
+    
+    <p class="text-xs text-green-500 mt-0.5">$85/mo</p>
+    
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-indigo-600 hover:bg-gray-800 transition-colors"
+       onclick="setCatFilter('network_storage')">
+    <p class="text-xs text-gray-500 mb-1">Network & Storage</p>
+    <p class="text-xl font-bold text-white">8</p>
+    
+    <p class="text-xs text-green-500 mt-0.5">$1,167/mo</p>
+    
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-indigo-600 hover:bg-gray-800 transition-colors"
+       onclick="setCatFilter('database_tuning')">
+    <p class="text-xs text-gray-500 mb-1">Database</p>
+    <p class="text-xl font-bold text-white">3</p>
+    
+    <p class="text-xs text-green-500 mt-0.5">$137/mo</p>
+    
+  </div>
+  
+  
+  
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-indigo-600 hover:bg-gray-800 transition-colors"
+       onclick="setCatFilter('savings_plans')">
+    <p class="text-xs text-gray-500 mb-1">Savings Plans</p>
+    <p class="text-xl font-bold text-white">1</p>
+    
+  </div>
+  
+  
+</div>
+
+
+<!-- Findings table -->
+<div class="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+  <div class="px-6 py-4 border-b border-gray-800 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+    <h2 class="font-semibold text-white">Findings <span class="text-gray-500 font-normal text-sm">(0)</span></h2>
+    <!-- Filters -->
+    <div class="flex gap-2 flex-wrap">
+      <select id="sev-filter" onchange="filterFindings()"
+        class="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-300 focus:outline-none">
+        <option value="">All severities</option>
+        <option value="critical">Critical</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <select id="cat-filter" onchange="filterFindings()"
+        class="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-300 focus:outline-none">
+        <option value="">All categories</option>
+        <option value="infra_hygiene">Infra Hygiene</option>
+        <option value="compute_strategy">Compute</option>
+        <option value="network_storage">Network & Storage</option>
+        <option value="database_tuning">Database</option>
+        <option value="savings_plans">Savings Plans</option>
+      </select>
+      <select id="tier-filter" onchange="filterFindings()"
+        class="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-300 focus:outline-none">
+        <option value="">All priorities</option>
+        <option value="quick_win">Quick Win</option>
+        <option value="this_month">This Month</option>
+        <option value="needs_review">Needs Review</option>
+        <option value="later">Later</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="findings-list" class="divide-y divide-gray-800">
+    
+    <div class="px-6 py-12 text-center text-gray-500">No findings match the current filters.</div>
+    
+  </div>
+</div>
+
+<!-- Job status toast -->
+<div id="toast" class="hidden fixed bottom-6 right-6 bg-gray-800 border border-gray-700 rounded-xl px-5 py-3 text-sm text-gray-200 shadow-xl max-w-sm font-mono"></div>
+
+<script>
+function toggleDetail(idx) {
+  const el = document.getElementById('detail-' + idx);
+  el.classList.toggle('hidden');
+}
+
+function filterFindings() {
+  const sev = document.getElementById('sev-filter').value;
+  const cat = document.getElementById('cat-filter').value;
+  const tier = document.getElementById('tier-filter').value;
+  document.querySelectorAll('.finding-row').forEach(row => {
+    const sevOk = !sev || row.dataset.severity === sev;
+    const catOk = !cat || row.dataset.category === cat;
+    const tierOk = !tier || row.dataset.tier === tier;
+    row.style.display = sevOk && catOk && tierOk ? '' : 'none';
+  });
+}
+
+function setTierFilter(tier) {
+  const el = document.getElementById('tier-filter');
+  el.value = el.value === tier ? '' : tier;
+  filterFindings();
+}
+
+function setSevFilter(sev) {
+  const el = document.getElementById('sev-filter');
+  el.value = el.value === sev ? '' : sev;
+  filterFindings();
+  document.querySelector('.finding-row')?.closest('div')?.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function setCatFilter(cat) {
+  const el = document.getElementById('cat-filter');
+  el.value = el.value === cat ? '' : cat;
+  filterFindings();
+  document.querySelector('.finding-row')?.closest('div')?.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 5000);
+}
+
+async function triggerAudit(accountId) {
+  showToast('Queuing audit for ' + accountId + ' (mock mode)...');
+  try {
+    const resp = await fetch('/api/accounts/' + accountId + '/run-audit?mock=true', {method: 'POST'});
+    const data = await resp.json();
+    showToast('Job ' + data.job_id + ' running...');
+    const poll = setInterval(async () => {
+      const jr = await fetch('/api/jobs/' + data.job_id);
+      const job = await jr.json();
+      if (['succeeded','failed'].includes(job.status)) {
+        clearInterval(poll);
+        showToast('Audit ' + job.status + '. Refreshing in 2s...');
+        if (job.status === 'succeeded') setTimeout(() => location.reload(), 2000);
+      }
+    }, 2500);
+  } catch(e) {
+    showToast('Error: ' + e);
+  }
+}
+</script>
+
+
+</main>
+
+<footer class="text-center text-xs text-gray-600 py-6 border-t border-gray-800 mt-8 sm:mt-12">
+  FinOps Platform &mdash; Cloud Cost Optimisation
+</footer>
+
+</body>
+</html>
