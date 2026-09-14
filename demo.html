@@ -37,14 +37,11 @@
     </h2>
     <p style="color: #E6EBF0; font-size: 0.95rem; margin: 0; line-height: 1.6; max-width: 900px;">
       <strong style="color: #ffffff;">This is the X-Ray. CloudThrift provides the Surgeon.</strong><br/>
-      This automated dashboard filters 5,000+ noisy AWS Trusted Advisor alerts down to the top zero-risk actions. 
-      But scripts shouldn't execute 3-year Savings Plans. That's why our Senior CloudOps architects map these findings directly to your 12-month business roadmap to execute them safely, with zero downtime.
+      This automated dashboard surfaces the raw leaks. Our Senior CloudOps architects review this data, align it with your business roadmap, and provide safe, validated execution steps.
     </p>
   </div>
 </div>
 <!-- END BRAND VALUE BANNER -->
-
-
 
 
 <!-- Nav -->
@@ -244,7 +241,7 @@
 <!-- Findings table -->
 <div class="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
   <div class="px-6 py-4 border-b border-gray-800 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-    <h2 class="font-semibold text-white">Findings <span class="text-gray-500 font-normal text-sm">(0)</span></h2>
+    <h2 class="font-semibold text-white">Findings <span class="text-gray-500 font-normal text-sm">(24)</span></h2>
     <!-- Filters -->
     <div class="flex gap-2 flex-wrap">
       <select id="sev-filter" onchange="filterFindings()"
@@ -277,7 +274,1937 @@
 
   <div id="findings-list" class="divide-y divide-gray-800">
     
-    <div class="px-6 py-12 text-center text-gray-500">No findings match the current filters.</div>
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="critical"
+         data-category="network_storage"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-critical uppercase">
+          crit
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('1')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Inter-AZ data transfer charges — flag for architectural review</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $920.00/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 517.5</span>
+            
+            <span>VPC</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">inter-az-transfer-us-east-1</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-1" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Inter-AZ data transfer: $1,840.00 in the last 30 days (~$1,840.00/month). EXCEEDS $500/month threshold — recommend architectural review.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Co-locate services in the same AZ. Use ElastiCache to reduce cross-AZ DB reads. Escalate to architecture review — spend exceeds $500/month.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">Co-locate services in the same AZ. Use ElastiCache to reduce cross-AZ DB reads. Escalate to architecture review — spend exceeds $500/month.</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (11 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "alert_threshold_usd": 500.0,
+  "cost_last_30d_usd": 1840.0,
+  "estimated_monthly_usd": 1840.0,
+  "exceeds_alert_threshold": true,
+  "implementation_ease": 0.75,
+  "implementation_risk": 0.25,
+  "priority_score": 517.5,
+  "priority_tier": "quick_win",
+  "recommended_action": "architectural_review",
+  "runbook": [
+    "Co-locate services in the same AZ. Use ElastiCache to reduce cross-AZ DB reads. Escalate to architecture review \u2014 spend exceeds $500/month."
+  ],
+  "runbook_summary": "Co-locate services in the same AZ. Use ElastiCache to reduce cross-AZ DB reads. Escalate to architecture review \u2014 spend "
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="network_storage"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('2')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >NAT Gateway data-processing charges detected</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $187.44/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 105.43</span>
+            
+            <span>VPC/NAT</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">nat-gateway-us-east-1</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-2" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">NAT Gateway data-processing cost: $312.40 in the last 30 days (~$312.40/month). Likely cause: EC2 instances pulling container images via NAT instead of VPC Endpoints.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Add VPC Interface Endpoints for ECR, S3, and Secrets Manager.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">Add VPC Interface Endpoints for ECR, S3, and Secrets Manager.</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "cost_last_30d_usd": 312.4,
+  "estimated_monthly_usd": 312.4,
+  "implementation_ease": 0.75,
+  "implementation_risk": 0.25,
+  "priority_score": 105.43,
+  "priority_tier": "quick_win",
+  "recommended_action": "Add VPC Endpoints for S3, ECR, Secrets Manager",
+  "runbook": [
+    "Add VPC Interface Endpoints for ECR, S3, and Secrets Manager."
+  ],
+  "runbook_summary": "Add VPC Interface Endpoints for ECR, S3, and Secrets Manager."
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="infra_hygiene"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('3')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Unattached EBS volume (safe to delete)</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $50.00/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 38.25</span>
+            
+            <span>EC2/EBS</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">vol-0abc1234</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-3" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Volume vol-0abc1234 (500 GiB gp2) has been unattached for 47 days. CloudTrail found no DetachVolume event in the last 30 days.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Snapshot then delete this volume.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 create-snapshot --volume-id vol-0abc1234 --description 'Pre-delete backup' --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 delete-volume --volume-id vol-0abc1234 --region us-east-1</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (11 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "implementation_ease": 0.9,
+  "implementation_risk": 0.15,
+  "priority_score": 38.25,
+  "priority_tier": "quick_win",
+  "recent_detach_in_cloudtrail": false,
+  "runbook": [
+    "aws ec2 create-snapshot --volume-id vol-0abc1234 --description \u0027Pre-delete backup\u0027 --region us-east-1",
+    "aws ec2 delete-volume --volume-id vol-0abc1234 --region us-east-1"
+  ],
+  "runbook_summary": "aws ec2 create-snapshot --volume-id vol-0abc1234 --description \u0027Pre-delete backup\u0027 --region us-east-1",
+  "safe_to_delete": true,
+  "size_gib": 500,
+  "volume_id": "vol-0abc1234",
+  "volume_type": "gp2"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="medium"
+         data-category="network_storage"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-medium uppercase">
+          medi
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('4')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >S3 bucket 'acme-app-data' missing tiering lifecycle policy</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 36.08</span>
+            
+            <span>S3</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">acme-app-data</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-4" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Bucket 'acme-app-data' has no lifecycle rules. Objects accumulate indefinitely in Standard storage. Applying Intelligent-Tiering + GIR could reduce costs by 40–68%.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Apply the lifecycle_configuration in metadata.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws s3api put-bucket-lifecycle-configuration --bucket acme-app-data --lifecycle-configuration file://lifecycle.json</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws s3api put-bucket-intelligent-tiering-configuration --bucket acme-app-data ...</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "bucket_name": "acme-app-data",
+  "has_lifecycle_policy": false,
+  "implementation_ease": 0.82,
+  "implementation_risk": 0.12,
+  "priority_score": 36.08,
+  "priority_tier": "quick_win",
+  "runbook": [
+    "aws s3api put-bucket-lifecycle-configuration --bucket acme-app-data --lifecycle-configuration file://lifecycle.json",
+    "aws s3api put-bucket-intelligent-tiering-configuration --bucket acme-app-data ..."
+  ],
+  "runbook_summary": "aws s3api put-bucket-lifecycle-configuration --bucket acme-app-data --lifecycle-configuration file://lifecycle.json",
+  "tiering_strategy": {
+    "intelligent_tiering": "Enable on bucket for automatic optimisation",
+    "large_objects_gte_1mb": "S3 Glacier Instant Retrieval after 30 days",
+    "small_objects_lt_1mb": "S3 Standard-IA after 30 days"
+  }
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="medium"
+         data-category="network_storage"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-medium uppercase">
+          medi
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('5')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >S3 bucket 'acme-backups' has versioning without lifecycle</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 36.08</span>
+            
+            <span>S3</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">acme-backups</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-5" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Bucket 'acme-backups' has versioning enabled but no lifecycle policy.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Expire noncurrent versions after 90 days.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws s3api put-bucket-lifecycle-configuration --bucket acme-backups --lifecycle-configuration file://lifecycle.json</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws s3api put-bucket-intelligent-tiering-configuration --bucket acme-backups ...</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (8 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "bucket_name": "acme-backups",
+  "implementation_ease": 0.82,
+  "implementation_risk": 0.12,
+  "priority_score": 36.08,
+  "priority_tier": "quick_win",
+  "runbook": [
+    "aws s3api put-bucket-lifecycle-configuration --bucket acme-backups --lifecycle-configuration file://lifecycle.json",
+    "aws s3api put-bucket-intelligent-tiering-configuration --bucket acme-backups ..."
+  ],
+  "runbook_summary": "aws s3api put-bucket-lifecycle-configuration --bucket acme-backups --lifecycle-configuration file://lifecycle.json",
+  "versioning_enabled": true
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="savings_plans"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('6')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >EC2 Reserved Instance expiring in 21 days</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            
+            <span>score 36.0</span>
+            
+            <span>EC2</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">ri-0abc123456789</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-6" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Reserved Instance ri-0abc123456789 (2x m5.large) expires in 21 days.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Renew the RI or migrate to a Savings Plan before expiry.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 describe-reserved-instances --filters Name=state,Values=active</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># Renew via Console → Reserved Instances → Purchase, or migrate to Compute Savings Plan</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (8 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "days_until_expiry": 21,
+  "implementation_ease": 0.6,
+  "implementation_risk": 0.2,
+  "priority_score": 36.0,
+  "priority_tier": "later",
+  "reserved_instance_id": "ri-0abc123456789",
+  "runbook": [
+    "aws ec2 describe-reserved-instances --filters Name=state,Values=active",
+    "# Renew via Console \u2192 Reserved Instances \u2192 Purchase, or migrate to Compute Savings Plan"
+  ],
+  "runbook_summary": "aws ec2 describe-reserved-instances --filters Name=state,Values=active"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="low"
+         data-category="network_storage"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-low uppercase">
+          low
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('7')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >S3 bucket 'acme-uploads' has stale incomplete multipart uploads</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 21.38</span>
+            
+            <span>S3</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">acme-uploads</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-7" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Bucket 'acme-uploads' has 3 multipart upload(s) older than 7 days.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Add AbortIncompleteMultipartUpload lifecycle rule after 7 days.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws s3api put-bucket-lifecycle-configuration --bucket acme-uploads --lifecycle-configuration file://abort-multipart.json</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># abort-multipart.json: AbortIncompleteMultipartUpload DaysAfterInitiation=7</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (8 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "bucket_name": "acme-uploads",
+  "implementation_ease": 0.9,
+  "implementation_risk": 0.05,
+  "priority_score": 21.38,
+  "priority_tier": "quick_win",
+  "runbook": [
+    "aws s3api put-bucket-lifecycle-configuration --bucket acme-uploads --lifecycle-configuration file://abort-multipart.json",
+    "# abort-multipart.json: AbortIncompleteMultipartUpload DaysAfterInitiation=7"
+  ],
+  "runbook_summary": "aws s3api put-bucket-lifecycle-configuration --bucket acme-uploads --lifecycle-configuration file://abort-multipart.json",
+  "stale_upload_count": 3
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="compute_strategy"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('8')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >ASG 'web-api-asg' running 100% On-Demand — Spot Fleet candidate</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            
+            <span>score 20.62</span>
+            
+            <span>EC2/ASG</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">web-api-asg</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-8" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Auto Scaling Group 'web-api-asg' has 8 On-Demand instances behind an ALB with no stateful tags. Switching to Spot could reduce compute costs by 60–80%.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Apply the spot_fleet_recommendation in metadata to the ASG MixedInstancesPolicy.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">Apply the spot_fleet_recommendation in metadata to the ASG MixedInstancesPolicy.</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (10 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "asg_name": "web-api-asg",
+  "current_instance_types": [
+    "m5.xlarge"
+  ],
+  "implementation_ease": 0.5,
+  "implementation_risk": 0.45,
+  "on_demand_instance_count": 8,
+  "priority_score": 20.62,
+  "priority_tier": "later",
+  "runbook": [
+    "Apply the spot_fleet_recommendation in metadata to the ASG MixedInstancesPolicy."
+  ],
+  "runbook_summary": "Apply the spot_fleet_recommendation in metadata to the ASG MixedInstancesPolicy.",
+  "spot_fleet_recommendation": {
+    "AllocationStrategy": "capacity-optimized",
+    "InstanceOverrides": [
+      {
+        "InstanceType": "m5.xlarge"
+      },
+      {
+        "InstanceType": "m6g.xlarge"
+      }
+    ],
+    "OnDemandBaseCapacity": 1,
+    "OnDemandPercentageAboveBaseCapacity": 0,
+    "SpotInterruptionHandling": {
+      "approach": "EventBridge rule for EC2 Spot Instance Interruption Notice",
+      "notice_window_minutes": 2,
+      "recommended_actions": [
+        "Publish EventBridge rule: source=aws.ec2, detail-type=EC2 Spot Instance Interruption Warning",
+        "Lambda target: call ELB DeregisterTargets for the interrupted instance"
+      ]
+    }
+  }
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="compute_strategy"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('9')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Idle EC2 instance</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            
+            <span>score 20.62</span>
+            
+            <span>EC2</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">i-0fff000aaa</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-9" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Instance i-0fff000aaa (m5.2xlarge) averaged 1.3% CPU over 14 days.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Right-size to a smaller instance type or terminate if unused.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">Right-size to a smaller instance type or terminate if unused.</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "avg_cpu_pct": 1.3,
+  "implementation_ease": 0.5,
+  "implementation_risk": 0.45,
+  "instance_type": "m5.2xlarge",
+  "lookback_days": 14,
+  "priority_score": 20.62,
+  "priority_tier": "later",
+  "runbook": [
+    "Right-size to a smaller instance type or terminate if unused."
+  ],
+  "runbook_summary": "Right-size to a smaller instance type or terminate if unused."
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="low"
+         data-category="infra_hygiene"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-low uppercase">
+          low
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('10')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >ECR repository 'web-api' has no lifecycle policy</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 19.8</span>
+            
+            <span>ECR</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">web-api</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-10" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">ECR repository 'web-api' has no lifecycle policy. Old images accumulate storage charges.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Expire untagged images after 7 days.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ecr put-lifecycle-policy --repository-name web-api --region us-east-1 --lifecycle-policy-text file://ecr-lifecycle.json</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (7 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "implementation_ease": 0.88,
+  "implementation_risk": 0.1,
+  "priority_score": 19.8,
+  "priority_tier": "quick_win",
+  "repository_name": "web-api",
+  "runbook": [
+    "aws ecr put-lifecycle-policy --repository-name web-api --region us-east-1 --lifecycle-policy-text file://ecr-lifecycle.json"
+  ],
+  "runbook_summary": "aws ecr put-lifecycle-policy --repository-name web-api --region us-east-1 --lifecycle-policy-text file://ecr-lifecycle.j"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="database_tuning"
+         data-tier="this_month">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('11')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Non-prod RDS instance 'acme-staging-db' — weekend stop/start candidate</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $136.80/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-this_month">this month</span>
+            
+            
+            <span>score 19.15</span>
+            
+            <span>RDS</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">acme-staging-db</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-11" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">RDS instance acme-staging-db (db.m5.xlarge, postgres) appears non-production (Multi-AZ=False, Environment=staging tag). Stopping over weekends saves ~$136.80/month.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Deploy the weekend_automation_blueprint in metadata.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws rds describe-db-instances --db-instance-identifier acme-staging-db --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># Apply rightsizing during a maintenance window after validating connections/CPU</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (15 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "db_instance_id": "acme-staging-db",
+  "engine": "postgres",
+  "estimated_monthly_savings_usd": 136.8,
+  "hourly_price_usd": 0.342,
+  "implementation_ease": 0.4,
+  "implementation_risk": 0.65,
+  "instance_class": "db.m5.xlarge",
+  "matched_env_tags": {
+    "environment": "staging"
+  },
+  "multi_az": false,
+  "priority_score": 19.15,
+  "priority_tier": "this_month",
+  "runbook": [
+    "aws rds describe-db-instances --db-instance-identifier acme-staging-db --region us-east-1",
+    "# Apply rightsizing during a maintenance window after validating connections/CPU"
+  ],
+  "runbook_summary": "aws rds describe-db-instances --db-instance-identifier acme-staging-db --region us-east-1",
+  "weekend_automation_blueprint": {
+    "AllocationStrategy": "N/A",
+    "savings_calculation": {
+      "estimated_annual_savings_usd": 1641.6,
+      "estimated_monthly_savings_usd": 136.8,
+      "hourly_price_usd": 0.342,
+      "hours_stopped_per_weekend": 60,
+      "note": "Storage costs excluded \u2014 billed regardless of instance state.",
+      "weekends_per_month": 4
+    },
+    "schedules": {
+      "start": {
+        "cron": "cron(0 8 ? * MON *)",
+        "description": "Start \u2014 Monday 08:00 UTC"
+      },
+      "stop": {
+        "cron": "cron(0 20 ? * FRI *)",
+        "description": "Stop \u2014 Friday 20:00 UTC"
+      }
+    }
+  },
+  "weekend_stopped_hours": 60
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="medium"
+         data-category="compute_strategy"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-medium uppercase">
+          medi
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('12')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Compute Optimizer: rightsizing i-0underutil99 (m5.xlarge → m5.large)</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $85.00/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            <span class="px-2 py-0.5 rounded bg-gray-800 text-gray-400">compute_optimizer</span>
+            
+            
+            <span>score 17.21</span>
+            
+            <span>EC2</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">i-0underutil99</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-12" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Compute Optimizer recommends underprovisioned for i-0underutil99 (currently m5.xlarge). Estimated savings: $85.00/month.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Validate workload metrics for i-0underutil99, then apply rightsizing to m5.large.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --dimensions Name=InstanceId,Value=i-0underutil99 --period 86400 --statistics Average --start-time $(date -u -d '14 days ago' +%Y-%m-%dT%H:%M:%S) --end-time $(date -u +%Y-%m-%dT%H:%M:%S) --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># Validate 14-day CPU < 20% before rightsizing or terminating</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (13 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "action_type": "Rightsize",
+  "also_reported_by": [
+    "compute_optimizer",
+    "cost_optimization_hub"
+  ],
+  "coh_recommendation_id": "coh-mock-001",
+  "current_instance_type": "m5.xlarge",
+  "finding": "Underprovisioned",
+  "implementation_ease": 0.45,
+  "implementation_risk": 0.55,
+  "priority_score": 17.21,
+  "priority_tier": "later",
+  "recommended_instance_type": "m5.large",
+  "runbook": [
+    "aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --dimensions Name=InstanceId,Value=i-0underutil99 --period 86400 --statistics Average --start-time $(date -u -d \u002714 days ago\u0027 +%Y-%m-%dT%H:%M:%S) --end-time $(date -u +%Y-%m-%dT%H:%M:%S) --region us-east-1",
+    "# Validate 14-day CPU \u003c 20% before rightsizing or terminating"
+  ],
+  "runbook_summary": "aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --dimensions Name=InstanceId,Value",
+  "source": "compute_optimizer"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="low"
+         data-category="infra_hygiene"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-low uppercase">
+          low
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('13')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >gp2 EBS volume — migrate to gp3 for 20% savings</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $20.00/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 16.56</span>
+            
+            <span>EC2/EBS</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">vol-0def5678</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-13" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Volume vol-0def5678 (1000 GiB) uses the legacy gp2 type. Migrating to gp3 saves $20.00/month with no performance regression.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Run: aws ec2 modify-volume --volume-type gp3 --volume-id vol-0def5678</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 modify-volume --volume-type gp3 --volume-id vol-0def5678 --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># Zero-downtime while attached; monitor modify-volume progress in console</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (12 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "current_attached_instance_ids": [
+    "i-0aaa111bbb222"
+  ],
+  "current_type": "gp2",
+  "estimated_monthly_savings_usd": 20.0,
+  "implementation_ease": 0.92,
+  "implementation_risk": 0.1,
+  "priority_score": 16.56,
+  "priority_tier": "quick_win",
+  "recommended_type": "gp3",
+  "runbook": [
+    "aws ec2 modify-volume --volume-type gp3 --volume-id vol-0def5678 --region us-east-1",
+    "# Zero-downtime while attached; monitor modify-volume progress in console"
+  ],
+  "runbook_summary": "aws ec2 modify-volume --volume-type gp3 --volume-id vol-0def5678 --region us-east-1",
+  "size_gib": 1000,
+  "volume_id": "vol-0def5678"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="network_storage"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('14')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Idle NAT Gateway nat-0idle12345</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $32.40/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            
+            <span>score 15.79</span>
+            
+            <span>VPC/NAT</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">nat-0idle12345</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-14" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">NAT Gateway nat-0idle12345 processed no traffic in the last 7 days but incurs ~$32.40/month.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Delete this NAT Gateway if no private subnets route through it.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 describe-route-tables --filters Name=route.nat-gateway-id,Values=nat-0idle12345 --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 delete-nat-gateway --nat-gateway-id nat-0idle12345 --region us-east-1</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "bytes_processed": 0,
+  "implementation_ease": 0.75,
+  "implementation_risk": 0.35,
+  "lookback_days": 7,
+  "nat_gateway_id": "nat-0idle12345",
+  "priority_score": 15.79,
+  "priority_tier": "later",
+  "runbook": [
+    "aws ec2 describe-route-tables --filters Name=route.nat-gateway-id,Values=nat-0idle12345 --region us-east-1",
+    "aws ec2 delete-nat-gateway --nat-gateway-id nat-0idle12345 --region us-east-1"
+  ],
+  "runbook_summary": "aws ec2 describe-route-tables --filters Name=route.nat-gateway-id,Values=nat-0idle12345 --region us-east-1"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="critical"
+         data-category="database_tuning"
+         data-tier="needs_review">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-critical uppercase">
+          crit
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('15')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Production RDS instance without Multi-AZ</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-needs_review">needs review</span>
+            
+            
+            <span>score 14.0</span>
+            
+            <span>RDS</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">acme-prod-pg</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-15" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">RDS instance acme-prod-pg is tagged Environment=prod but has Multi-AZ disabled.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Enable Multi-AZ for production RDS to meet availability SLAs.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws rds describe-db-instances --db-instance-identifier acme-prod-pg --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># Apply rightsizing during a maintenance window after validating connections/CPU</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "engine": "postgres",
+  "env_tag": "prod",
+  "implementation_ease": 0.4,
+  "implementation_risk": 0.65,
+  "instance_class": "db.r5.2xlarge",
+  "priority_score": 14.0,
+  "priority_tier": "needs_review",
+  "runbook": [
+    "aws rds describe-db-instances --db-instance-identifier acme-prod-pg --region us-east-1",
+    "# Apply rightsizing during a maintenance window after validating connections/CPU"
+  ],
+  "runbook_summary": "aws rds describe-db-instances --db-instance-identifier acme-prod-pg --region us-east-1"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="medium"
+         data-category="compute_strategy"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-medium uppercase">
+          medi
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('16')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Stopped EC2 instance with attached EBS storage</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            
+            <span>score 13.75</span>
+            
+            <span>EC2</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">i-0bbb222ccc</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-16" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Instance i-0bbb222ccc (c5.4xlarge) is stopped but its EBS volumes are still billing.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Snapshot the root volume and terminate, or restart if actively needed.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">Snapshot the root volume and terminate, or restart if actively needed.</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (7 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "implementation_ease": 0.5,
+  "implementation_risk": 0.45,
+  "instance_type": "c5.4xlarge",
+  "priority_score": 13.75,
+  "priority_tier": "later",
+  "runbook": [
+    "Snapshot the root volume and terminate, or restart if actively needed."
+  ],
+  "runbook_summary": "Snapshot the root volume and terminate, or restart if actively needed."
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="medium"
+         data-category="infra_hygiene"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-medium uppercase">
+          medi
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('17')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Trusted Advisor: Underutilized Amazon EBS Volumes</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $24.00/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            <span class="px-2 py-0.5 rounded bg-gray-800 text-gray-400">trusted_advisor</span>
+            
+            
+            <span>score 11.76</span>
+            
+            <span>EC2/EBS</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">vol-0ghost111</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-17" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">AWS Trusted Advisor flagged vol-0ghost111 under check 'Underutilized Amazon EBS Volumes'. Status: warning.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Review Trusted Advisor check 'Underutilized Amazon EBS Volumes' and remediate vol-0ghost111.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># Trusted Advisor check: Underutilized Amazon EBS Volumes</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all">Review Trusted Advisor check 'Underutilized Amazon EBS Volumes' and remediate vol-0ghost111.</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (10 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "implementation_ease": 0.7,
+  "implementation_risk": 0.3,
+  "priority_score": 11.76,
+  "priority_tier": "later",
+  "runbook": [
+    "# Trusted Advisor check: Underutilized Amazon EBS Volumes",
+    "Review Trusted Advisor check \u0027Underutilized Amazon EBS Volumes\u0027 and remediate vol-0ghost111."
+  ],
+  "runbook_summary": "# Trusted Advisor check: Underutilized Amazon EBS Volumes",
+  "source": "trusted_advisor",
+  "ta_check_id": "Qch7DwouX1",
+  "ta_check_name": "Underutilized Amazon EBS Volumes",
+  "ta_status": "warning"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="database_tuning"
+         data-tier="needs_review">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('18')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Idle RDS instance</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-needs_review">needs review</span>
+            
+            
+            <span>score 10.5</span>
+            
+            <span>RDS</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">acme-dev-mysql</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-18" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">RDS instance acme-dev-mysql (db.t3.large, mysql) averaged 0.1 connections over 14 days.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Stop or delete. Consider Aurora Serverless v2 for intermittent workloads.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws rds describe-db-instances --db-instance-identifier acme-dev-mysql --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all"># Apply rightsizing during a maintenance window after validating connections/CPU</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "avg_connections": 0.1,
+  "engine": "mysql",
+  "implementation_ease": 0.4,
+  "implementation_risk": 0.65,
+  "instance_class": "db.t3.large",
+  "priority_score": 10.5,
+  "priority_tier": "needs_review",
+  "runbook": [
+    "aws rds describe-db-instances --db-instance-identifier acme-dev-mysql --region us-east-1",
+    "# Apply rightsizing during a maintenance window after validating connections/CPU"
+  ],
+  "runbook_summary": "aws rds describe-db-instances --db-instance-identifier acme-dev-mysql --region us-east-1"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="medium"
+         data-category="network_storage"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-medium uppercase">
+          medi
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('19')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >CloudWatch log group '/aws/lambda/api-handler' has infinite retention</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $12.60/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 9.85</span>
+            
+            <span>CloudWatch Logs</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">/aws/lambda/api-handler</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-19" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Log group '/aws/lambda/api-handler' has no retention policy (4.2 GiB stored).</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Set retention to 30 days.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws logs put-retention-policy --log-group-name '/aws/lambda/api-handler' --retention-in-days 30 --region us-east-1</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (8 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "implementation_ease": 0.85,
+  "implementation_risk": 0.08,
+  "log_group_name": "/aws/lambda/api-handler",
+  "priority_score": 9.85,
+  "priority_tier": "quick_win",
+  "runbook": [
+    "aws logs put-retention-policy --log-group-name \u0027/aws/lambda/api-handler\u0027 --retention-in-days 30 --region us-east-1"
+  ],
+  "runbook_summary": "aws logs put-retention-policy --log-group-name \u0027/aws/lambda/api-handler\u0027 --retention-in-days 30 --region us-east-1",
+  "stored_gib": 4.2
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="high"
+         data-category="infra_hygiene"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-high uppercase">
+          high
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('20')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Load balancer with no healthy targets</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $16.20/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 9.72</span>
+            
+            <span>ELB</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">arn:aws:elasticloadbalancing:us-east-1:1…</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-20" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Load balancer legacy-api-lb (application) has no healthy registered targets but incurs ~$16/month.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Delete the load balancer or register and health-check targets.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws elbv2 describe-target-health --target-group-arn <tg-arn> --region us-east-1</li>
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws elbv2 delete-load-balancer --load-balancer-arn arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/legacy-api-lb/abc --region us-east-1</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "implementation_ease": 0.8,
+  "implementation_risk": 0.25,
+  "lb_name": "legacy-api-lb",
+  "lb_type": "application",
+  "priority_score": 9.72,
+  "priority_tier": "quick_win",
+  "runbook": [
+    "aws elbv2 describe-target-health --target-group-arn \u003ctg-arn\u003e --region us-east-1",
+    "aws elbv2 delete-load-balancer --load-balancer-arn arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/legacy-api-lb/abc --region us-east-1"
+  ],
+  "runbook_summary": "aws elbv2 describe-target-health --target-group-arn \u003ctg-arn\u003e --region us-east-1",
+  "scheme": "internet-facing"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="medium"
+         data-category="network_storage"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-medium uppercase">
+          medi
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('21')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Inactive VPC interface endpoint vpce-0abc98765</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $14.40/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 7.86</span>
+            
+            <span>VPC/PrivateLink</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">vpce-0abc98765</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-21" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Interface endpoint vpce-0abc98765 (com.amazonaws.us-east-1.ecr.api) processed no traffic in 14 days.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Delete endpoint vpce-0abc98765 if ECR is no longer accessed from this VPC.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 delete-vpc-endpoints --vpc-endpoint-ids vpce-0abc98765 --region us-east-1</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (8 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "implementation_ease": 0.78,
+  "implementation_risk": 0.3,
+  "priority_score": 7.86,
+  "priority_tier": "quick_win",
+  "runbook": [
+    "aws ec2 delete-vpc-endpoints --vpc-endpoint-ids vpce-0abc98765 --region us-east-1"
+  ],
+  "runbook_summary": "aws ec2 delete-vpc-endpoints --vpc-endpoint-ids vpce-0abc98765 --region us-east-1",
+  "service_name": "com.amazonaws.us-east-1.ecr.api",
+  "vpc_endpoint_id": "vpce-0abc98765"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="low"
+         data-category="compute_strategy"
+         data-tier="later">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-low uppercase">
+          low
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('22')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Graviton upgrade opportunity (~20% better price-performance)</button>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-later">later</span>
+            
+            
+            <span>score 6.88</span>
+            
+            <span>EC2</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">i-0ddd333eee</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-22" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Instance i-0ddd333eee runs m5.large (x86). Equivalent m6g.large offers ~20% lower cost.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Test workload on m6g.large and migrate.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">Test workload on m6g.large and migrate.</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (8 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "current_type": "m5.large",
+  "implementation_ease": 0.5,
+  "implementation_risk": 0.45,
+  "priority_score": 6.88,
+  "priority_tier": "later",
+  "recommended_type": "m6g.large",
+  "runbook": [
+    "Test workload on m6g.large and migrate."
+  ],
+  "runbook_summary": "Test workload on m6g.large and migrate."
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="low"
+         data-category="infra_hygiene"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-low uppercase">
+          low
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('23')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Orphaned EBS snapshot (aged 134 days)</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $10.00/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 6.8</span>
+            
+            <span>EC2/EBS</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">snap-0deadbeef</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-23" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Snapshot snap-0deadbeef (200 GiB) is 134 days old, not associated with any AMI, and has no exclusion tags.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Review and delete if no longer needed for disaster-recovery.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 delete-snapshot --snapshot-id snap-0deadbeef --region us-east-1</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (9 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "age_days": 134,
+  "implementation_ease": 0.85,
+  "implementation_risk": 0.2,
+  "priority_score": 6.8,
+  "priority_tier": "quick_win",
+  "runbook": [
+    "aws ec2 delete-snapshot --snapshot-id snap-0deadbeef --region us-east-1"
+  ],
+  "runbook_summary": "aws ec2 delete-snapshot --snapshot-id snap-0deadbeef --region us-east-1",
+  "size_gib": 200,
+  "snapshot_id": "snap-0deadbeef"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="low"
+         data-category="infra_hygiene"
+         data-tier="quick_win">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-low uppercase">
+          low
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('24')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >Unassociated Elastic IP</button>
+            
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              $3.65/mo
+            </span>
+            
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-quick_win">quick win</span>
+            
+            
+            <span>score 3.29</span>
+            
+            <span>EC2</span>
+            <span>·</span>
+            <span>us-east-1</span>
+            <span>·</span>
+            <span class="font-mono">eipalloc-0abc999</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-24" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">Elastic IP 54.123.45.67 is not associated with any resource.</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">Release this Elastic IP if it is no longer required.</p>
+            </div>
+            
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                
+                <li class="text-xs font-mono text-gray-300 break-all">aws ec2 release-address --allocation-id eipalloc-0abc999 --region us-east-1</li>
+                
+              </ol>
+            </div>
+            
+            
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata (8 keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{
+  "allocation_id": "eipalloc-0abc999",
+  "implementation_ease": 0.95,
+  "implementation_risk": 0.05,
+  "priority_score": 3.29,
+  "priority_tier": "quick_win",
+  "public_ip": "54.123.45.67",
+  "runbook": [
+    "aws ec2 release-address --allocation-id eipalloc-0abc999 --region us-east-1"
+  ],
+  "runbook_summary": "aws ec2 release-address --allocation-id eipalloc-0abc999 --region us-east-1"
+}</pre>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+    </div>
     
   </div>
 </div>
