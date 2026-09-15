@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-gray-950 text-gray-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero to LLMOps | Build Production AI Apps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: { brand: { 400: '#34D399', 500: '#10B981', 600: '#059669' } }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="antialiased font-sans flex flex-col min-h-screen">
+  
+  <header class="border-b border-gray-800/50 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="font-bold text-xl tracking-tight text-white">ZeroTo<span class="text-brand-500">LLMOps</span></div>
+      <div class="text-sm text-gray-400 font-mono hidden sm:block">By CloudThrift</div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- Hero -->
+    <section class="max-w-4xl mx-auto px-6 py-20 text-center">
+      <div class="inline-block px-3 py-1 mb-6 rounded-full bg-brand-500/10 text-brand-400 text-xs font-semibold uppercase tracking-wider border border-brand-500/20">
+        The 180-Day Curriculum
+      </div>
+      <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6">
+        From absolute beginner to <br class="hidden md:block"/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-600">deploying production AI.</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+        Stop getting stuck in tutorial hell. Learn how to actually build, scale, and maintain Large Language Model applications in production environments.
+      </p>
+    </section>
+
+    <!-- Pricing / Offerings -->
+    <section class="max-w-6xl mx-auto px-6 pb-24">
+      <div class="grid md:grid-cols-3 gap-8">
+        
+        <!-- Tier 1: Free -->
+        <div class="border border-gray-800 bg-gray-900/50 rounded-2xl p-8 flex flex-col">
+          <h3 class="text-xl font-bold text-white mb-2">The Video Course</h3>
+          <p class="text-gray-400 text-sm mb-6 h-10">The complete 180-day curriculum, available entirely for free.</p>
+          <div class="text-3xl font-bold text-white mb-6">$0</div>
+          <ul class="space-y-3 mb-8 flex-grow text-sm text-gray-300">
+            <li class="flex items-center gap-2">✓ 180 days of video lessons</li>
+            <li class="flex items-center gap-2">✓ Core concepts & architecture</li>
+            <li class="flex items-center gap-2">✓ Community access</li>
+          </ul>
+          <a href="#" class="w-full block text-center py-3 rounded-lg border border-gray-700 hover:bg-gray-800 text-white font-medium transition-colors">Watch on YouTube</a>
+        </div>
+
+        <!-- Tier 2: The Execution Kit -->
+        <div class="border-2 border-brand-500 bg-gray-900 rounded-2xl p-8 flex flex-col relative transform md:-translate-y-4 shadow-2xl shadow-brand-500/10">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+            Most Popular
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">The Execution Kit</h3>
+          <p class="text-gray-400 text-sm mb-6 h-10">Skip the typing. Get all the assets you need to deploy immediately.</p>
+          <div class="flex items-baseline gap-2 mb-6">
+            <span class="text-3xl font-bold text-white">$49</span>
+            <span class="text-gray-500 line-through text-sm">$99</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-grow text-sm text-gray-300">
+            <li class="flex items-center gap-2">✓ <strong class="text-white">Everything in Free</strong></li>
+            <li class="flex items-center gap-2">✓ Complete Notion Workspace</li>
+            <li class="flex items-center gap-2">✓ Copy-paste code templates</li>
+            <li class="flex items-center gap-2">✓ Infrastructure-as-Code scripts</li>
+            <li class="flex items-center gap-2">✓ High-res architectural diagrams</li>
+          </ul>
+          <a href="#" class="w-full block text-center py-3 rounded-lg bg-brand-500 hover:bg-brand-600 text-white font-medium transition-colors">Join the Waitlist</a>
+        </div>
+
+        <!-- Tier 3: Live Cohort -->
+        <div class="border border-gray-800 bg-gray-900/50 rounded-2xl p-8 flex flex-col">
+          <h3 class="text-xl font-bold text-white mb-2">Weekend Cohort</h3>
+          <p class="text-gray-400 text-sm mb-6 h-10">4-week live mentorship to build your specific LLM product.</p>
+          <div class="text-3xl font-bold text-white mb-6">$499</div>
+          <ul class="space-y-3 mb-8 flex-grow text-sm text-gray-300">
+            <li class="flex items-center gap-2">✓ <strong class="text-white">The Execution Kit included</strong></li>
+            <li class="flex items-center gap-2">✓ Weekly live Zoom sessions</li>
+            <li class="flex items-center gap-2">✓ Code reviews & debugging</li>
+            <li class="flex items-center gap-2">✓ ML interview preparation</li>
+            <li class="flex items-center gap-2">✓ Limited to 15 students</li>
+          </ul>
+          <a href="#" class="w-full block text-center py-3 rounded-lg border border-gray-700 hover:bg-gray-800 text-white font-medium transition-colors">Apply for Cohort</a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+    <p>© 2026 ZeroToLLMOps. Powered by CloudThrift.</p>
+  </footer>
+
+</body>
+</html>
