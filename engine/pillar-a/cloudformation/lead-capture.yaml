@@ -1,0 +1,283 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  FinOps Platform - Pillar A: Website lead-capture pipeline.
+  Serverless intake for the cloudthrift.io "Free Audit" form. API Gateway (HTTP API)
+  -> Lambda -> S3 (one JSON object per lead, date-partitioned) + SNS email notification.
+  A Glue table with partition projection makes the leads immediately queryable in Athena.
+  All data stays in this AWS account; no third-party form processor.
+
+Parameters:
+  NotifyEmail:
+    Type: String
+    Description: Email address that receives a notification for every new lead (SNS confirms via email first).
+    AllowedPattern: '[^@]+@[^@]+\.[^@]+'
+    ConstraintDescription: Must be a valid email address.
+
+  AllowedOrigin:
+    Type: String
+    Default: '*'
+    Description: >
+      CORS origin allowed to POST to the API. Set to your site origin once it is hosted
+      (e.g. https://cloudthrift.io). Leave '*' only while testing from localhost.
+
+  ProjectPrefix:
+    Type: String
+    Default: cloudthrift-leads
+    Description: Name prefix for created resources and the S3 bucket (must be globally unique-friendly).
+
+Resources:
+
+  # ---------- Storage ----------
+  LeadsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Sub '${ProjectPrefix}-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 }
+      VersioningConfiguration: { Status: Enabled }
+
+  AthenaResultsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Sub '${ProjectPrefix}-athena-results-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 }
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-query-results
+            Status: Enabled
+            ExpirationInDays: 30
+
+  # ---------- Notifications ----------
+  NotifyTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub '${ProjectPrefix}-notify'
+
+  NotifySubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref NotifyTopic
+      Protocol: email
+      Endpoint: !Ref NotifyEmail
+
+  # ---------- Lambda ----------
+  LeadFnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: lead-capture-inline
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents']
+                Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*'
+              - Effect: Allow
+                Action: s3:PutObject
+                Resource: !Sub '${LeadsBucket.Arn}/leads/*'
+              - Effect: Allow
+                Action: sns:Publish
+                Resource: !Ref NotifyTopic
+
+  LeadFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ProjectPrefix}-intake'
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 10
+      Role: !GetAtt LeadFnRole.Arn
+      Environment:
+        Variables:
+          BUCKET: !Ref LeadsBucket
+          TOPIC:  !Ref NotifyTopic
+          ORIGIN: !Ref AllowedOrigin
+      Code:
+        ZipFile: |
+          import json, os, uuid, datetime, boto3
+          s3 = boto3.client('s3'); sns = boto3.client('sns')
+          BUCKET = os.environ['BUCKET']; TOPIC = os.environ['TOPIC']; ORIGIN = os.environ['ORIGIN']
+          FIELDS = ['name','email','company','monthly_spend','aws_accounts',
+                    'region_count','regions','cost_concern','context']
+          def _resp(code, body):
+              return {'statusCode': code,
+                      'headers': {'Content-Type': 'application/json',
+                                  'Access-Control-Allow-Origin': '*',
+                                  'Access-Control-Allow-Headers': '*',
+                                  'Access-Control-Allow-Methods': 'POST,OPTIONS'},
+                      'body': json.dumps(body)}
+          def handler(event, ctx):
+              try:
+                  data = json.loads(event.get('body') or '{}')
+              except Exception:
+                  return _resp(400, {'success': False, 'message': 'Invalid JSON'})
+              if data.get('botcheck'):            # honeypot -> silently accept, store nothing
+                  return _resp(200, {'success': True})
+              if not data.get('name') or not data.get('email'):
+                  return _resp(400, {'success': False, 'message': 'Name and email are required'})
+              now = datetime.datetime.utcnow()
+              rec = {k: str(data.get(k, ''))[:2000] for k in FIELDS}
+              rec['id'] = str(uuid.uuid4())
+              rec['received_at'] = now.isoformat() + 'Z'
+              key = f"leads/dt={now:%Y-%m-%d}/{rec['id']}.json"
+              s3.put_object(Bucket=BUCKET, Key=key,
+                            Body=json.dumps(rec).encode('utf-8'),
+                            ContentType='application/json')
+              try:
+                  subj = f"New Audit Lead: {rec.get('name', 'Prospect')} ({rec.get('company', 'N/A')})"
+                  msg = (
+                      "NEW CLOUDTHRIFT AUDIT REQUEST\n"
+                      "=============================\n\n"
+                      f"• Full Name:           {rec.get('name') or 'N/A'}\n"
+                      f"• Work Email:          {rec.get('email') or 'N/A'}\n"
+                      f"• Company:             {rec.get('company') or 'N/A'}\n\n"
+                      "AUDIT DETAILS:\n"
+                      f"• Monthly Cloud Spend: {rec.get('monthly_spend') or 'N/A'}\n"
+                      f"• AWS Accounts:        {rec.get('aws_accounts') or 'N/A'}\n"
+                      f"• Region Count:        {rec.get('region_count') or 'N/A'}\n"
+                      f"• Specific Regions:    {rec.get('regions') or 'N/A'}\n"
+                      f"• Cost Concern:        {rec.get('cost_concern') or 'N/A'}\n\n"
+                      "NOTES / CONTEXT:\n"
+                      f"{rec.get('context') or 'None'}\n\n"
+                      "-----------------------------\n"
+                      f"Lead ID:  {rec['id']}\n"
+                      f"Received: {rec['received_at']}"
+                  )
+                  sns.publish(TopicArn=TOPIC, Subject=subj[:100], Message=msg)
+              except Exception:
+                  pass                            # storage already succeeded; don't fail the visitor
+              return _resp(200, {'success': True})
+
+  # ---------- API Gateway (HTTP API) ----------
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub '${ProjectPrefix}-api'
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowOrigins: ['*']
+        AllowMethods: [POST, OPTIONS]
+        AllowHeaders: ['*']
+        MaxAge: 3600
+
+  ApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt LeadFn.Arn
+      PayloadFormatVersion: '2.0'
+
+  ApiRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'POST /lead'
+      Target: !Sub 'integrations/${ApiIntegration}'
+
+  ApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref HttpApi
+      StageName: '$default'
+      AutoDeploy: true
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 10
+        ThrottlingRateLimit: 5
+
+  ApiInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref LeadFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/lead'
+
+  # ---------- Athena / Glue (query layer) ----------
+  LeadsGlueDb:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Sub '${ProjectPrefix}_db'
+
+  LeadsGlueTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref LeadsGlueDb
+      TableInput:
+        Name: leads
+        TableType: EXTERNAL_TABLE
+        PartitionKeys:
+          - { Name: dt, Type: string }
+        Parameters:
+          classification: json
+          projection.enabled: 'true'
+          projection.dt.type: date
+          projection.dt.range: '2026-01-01,NOW'
+          projection.dt.format: yyyy-MM-dd
+          storage.location.template: !Sub 's3://${LeadsBucket}/leads/dt=${!dt}/'
+        StorageDescriptor:
+          Location: !Sub 's3://${LeadsBucket}/leads/'
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+          SerdeInfo:
+            SerializationLibrary: org.openx.data.jsonserde.JsonSerDe
+          Columns:
+            - { Name: id,            Type: string }
+            - { Name: received_at,   Type: string }
+            - { Name: name,          Type: string }
+            - { Name: email,         Type: string }
+            - { Name: company,       Type: string }
+            - { Name: monthly_spend, Type: string }
+            - { Name: aws_accounts,  Type: string }
+            - { Name: region_count,  Type: string }
+            - { Name: regions,       Type: string }
+            - { Name: cost_concern,  Type: string }
+            - { Name: context,       Type: string }
+
+  LeadsWorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Sub '${ProjectPrefix}-wg'
+      State: ENABLED
+      WorkGroupConfiguration:
+        ResultConfiguration:
+          OutputLocation: !Sub 's3://${AthenaResultsBucket}/query-results/'
+
+Outputs:
+  ApiEndpoint:
+    Description: POST leads here. Paste this into website/form.html (LEAD_API).
+    Value: !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/lead'
+  LeadsBucketName:
+    Description: S3 bucket where lead JSON objects land.
+    Value: !Ref LeadsBucket
+  AthenaQuery:
+    Description: Run this in Athena (workgroup below) to see leads.
+    Value: !Sub 'SELECT received_at, name, company, email, monthly_spend FROM "${ProjectPrefix}_db".leads ORDER BY received_at DESC;'
+  AthenaWorkGroup:
+    Value: !Ref LeadsWorkGroup

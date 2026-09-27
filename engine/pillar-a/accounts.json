@@ -1,0 +1,101 @@
+{
+  "_readme": [
+    "Copy this file to accounts.json (gitignored — never commit it).",
+    "",
+    "TWO AUTH WORKFLOWS — use whichever fits your situation:",
+    "",
+    "WORKFLOW A — Company SSO (direct profile per account):",
+    "  Set 'profile' to your AWS CLI SSO profile for that account.",
+    "  No role_arn or external_id needed.",
+    "  Run: aws sso login --profile <name>  before auditing.",
+    "",
+    "WORKFLOW B — Cross-account role assumption (client deployments):",
+    "  Set 'role_arn' to an existing read-only role in that account.",
+    "  Set 'external_id' only if the role's trust policy has an ExternalId condition.",
+    "  Omit external_id entirely if the role has no ExternalId condition.",
+    "",
+    "You can mix both workflows in one file.",
+    "",
+    "Top-level optional fields:",
+    "  default_region:  fallback region for accounts without their own 'region'",
+    "  default_profile: fallback AWS CLI profile (overridden per-account by 'profile')",
+    "  external_id:     global ExternalId fallback for all role-assumption accounts"
+  ],
+
+  "default_region": "us-east-1",
+
+  "accounts": [
+
+    {
+      "_comment": "=== WORKFLOW A: Company SSO — one AWS CLI profile per account ===",
+      "id":      "000000000000",
+      "name":    "payer",
+      "env":     "payer",
+      "profile": "payer",
+      "region":  "us-east-1",
+      "enabled": true
+    },
+    {
+      "id":      "111111111111",
+      "name":    "iprod",
+      "env":     "prod",
+      "profile": "iprod",
+      "region":  "us-east-1",
+      "enabled": true
+    },
+    {
+      "id":      "222222222222",
+      "name":    "pprod",
+      "env":     "prod",
+      "profile": "pprod",
+      "region":  "us-east-1",
+      "enabled": true
+    },
+    {
+      "id":      "333333333333",
+      "name":    "dprod",
+      "env":     "prod",
+      "profile": "dprod",
+      "region":  "us-east-1",
+      "enabled": true
+    },
+    {
+      "id":      "444444444444",
+      "name":    "istg",
+      "env":     "staging",
+      "profile": "istg",
+      "region":  "us-east-1",
+      "enabled": true
+    },
+    {
+      "id":      "555555555555",
+      "name":    "dstg",
+      "env":     "staging",
+      "profile": "dstg",
+      "region":  "us-east-1",
+      "enabled": false,
+      "_note":   "enabled:false skips this account without deleting the entry"
+    },
+
+    {
+      "_comment": "=== WORKFLOW B: Cross-account role assumption (client deployments) ===",
+      "id":          "666666666666",
+      "name":        "client-prod",
+      "env":         "prod",
+      "role_arn":    "arn:aws:iam::666666666666:role/FinOps-Audit-ReadOnly-Role",
+      "external_id": "the-external-id-from-that-roles-trust-policy",
+      "region":      "us-east-1",
+      "enabled":     true
+    },
+    {
+      "_comment": "Role without ExternalId — omit the field entirely",
+      "id":       "777777777777",
+      "name":     "client-staging",
+      "env":      "staging",
+      "role_arn": "arn:aws:iam::777777777777:role/ExistingReadOnlyRole",
+      "region":   "us-east-1",
+      "enabled":  true
+    }
+
+  ]
+}

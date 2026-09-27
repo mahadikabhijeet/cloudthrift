@@ -1,0 +1,22 @@
+[
+  {
+    "ParameterKey": "CentralAccountId",
+    "ParameterValue": "REPLACE_WITH_CENTRAL_ACCOUNT_ID"
+  },
+  {
+    "ParameterKey": "ExternalId",
+    "ParameterValue": "REPLACE_WITH_EXTERNAL_ID"
+  },
+  {
+    "ParameterKey": "RoleName",
+    "ParameterValue": "FinOpsCrossAccountRole-Dev"
+  },
+  {
+    "ParameterKey": "Environment",
+    "ParameterValue": "dev"
+  },
+  {
+    "ParameterKey": "EnableCURAccess",
+    "ParameterValue": "false"
+  }
+]

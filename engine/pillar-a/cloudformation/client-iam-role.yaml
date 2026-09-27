@@ -1,0 +1,197 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  FinOps Platform - Pillar A: Cross-Account IAM Role.
+  Deploys a read-only role trusted by the central FinOps account.
+  Uses two AWS-managed policies (reviewed and published by AWS) plus one
+  small custom inline policy for Cost Explorer and resource discovery actions
+  not covered by the managed policies.
+
+Parameters:
+  CentralAccountId:
+    Type: String
+    Description: AWS Account ID of the central FinOps platform account that will assume this role.
+    AllowedPattern: '[0-9]{12}'
+    ConstraintDescription: Must be a valid 12-digit AWS account ID.
+
+  ExternalId:
+    Type: String
+    Description: Shared secret External ID for cross-account role assumption. Treat this like a password.
+    MinLength: 8
+    MaxLength: 128
+    NoEcho: true
+
+  RoleName:
+    Type: String
+    Default: FinOps-Audit-ReadOnly-Role
+    Description: Name for the cross-account IAM role.
+    AllowedPattern: '[a-zA-Z0-9+=,.@_/-]+'
+    ConstraintDescription: Must be a valid IAM role name.
+
+  Environment:
+    Type: String
+    Default: prod
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Deployment environment tag value.
+
+  EnableCURAccess:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Grant read access to Cost and Usage Report S3 bucket (only needed if this account owns the CUR bucket).
+
+Conditions:
+  CURAccessEnabled: !Equals [!Ref EnableCURAccess, 'true']
+
+Resources:
+
+  FinOpsCrossAccountRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      Description: Read-only cross-account role for FinOps platform cost and resource auditing.
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowFinOpsPlatformAssumption
+            Effect: Allow
+            Principal:
+              AWS: !Sub 'arn:aws:iam::${CentralAccountId}:root'
+            Action: 'sts:AssumeRole'
+            Condition:
+              StringEquals:
+                'sts:ExternalId': !Ref ExternalId
+
+      # ------------------------------------------------------------------
+      # Two AWS-managed policies — published and maintained by AWS.
+      # Clients can verify these at:
+      #   https://console.aws.amazon.com/iam/home#/policies
+      #
+      # ViewOnlyAccess         — read-only describe/list across all services
+      # AWSBillingReadOnlyAccess — billing console and invoice read access
+      # ------------------------------------------------------------------
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/AWSBillingReadOnlyAccess
+
+      # ------------------------------------------------------------------
+      # One custom inline policy for actions not covered by the above:
+      #   - Cost Explorer API (ce:*) — not in ViewOnlyAccess
+      #   - CloudTrail LookupEvents  — needed for EBS attachment validation
+      #   - Compute Optimizer        — optional; returns empty if not enabled
+      #   - Savings Plans / Pricing  — billing detail beyond AWSBillingReadOnlyAccess
+      #   - CUR S3 bucket access     — conditional, off by default
+      # ------------------------------------------------------------------
+      Policies:
+        - PolicyName: FinOps-AuditGaps
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: CostExplorerRead
+                Effect: Allow
+                Action:
+                  - 'ce:GetCostAndUsage'
+                  - 'ce:GetCostAndUsageWithResources'
+                  - 'ce:GetCostForecast'
+                  - 'ce:GetReservationCoverage'
+                  - 'ce:GetReservationPurchaseRecommendation'
+                  - 'ce:GetReservationUtilization'
+                  - 'ce:GetRightsizingRecommendation'
+                  - 'ce:GetSavingsPlansCoverage'
+                  - 'ce:GetSavingsPlansUtilization'
+                  - 'ce:GetSavingsPlansUtilizationDetails'
+                  - 'ce:GetDimensionValues'
+                  - 'ce:GetTags'
+                  - 'ce:GetUsageForecast'
+                  - 'ce:ListCostAllocationTags'
+                  - 'ce:ListCostCategoryDefinitions'
+                Resource: '*'
+
+              - Sid: PricingAndSavingsPlansRead
+                Effect: Allow
+                Action:
+                  - 'pricing:DescribeServices'
+                  - 'pricing:GetAttributeValues'
+                  - 'pricing:GetProducts'
+                  - 'savingsplans:DescribeSavingsPlans'
+                  - 'savingsplans:DescribeSavingsPlansOfferings'
+                  - 'savingsplans:DescribeSavingsPlanRates'
+                  - 'savingsplans:ListTagsForResource'
+                Resource: '*'
+
+              - Sid: CloudTrailRead
+                Effect: Allow
+                Action:
+                  - 'cloudtrail:LookupEvents'
+                Resource: '*'
+
+              - Sid: ComputeOptimizerRead
+                Effect: Allow
+                Action:
+                  - 'compute-optimizer:GetEC2InstanceRecommendations'
+                  - 'compute-optimizer:GetEC2RecommendationProjectedMetrics'
+                  - 'compute-optimizer:GetAutoScalingGroupRecommendations'
+                  - 'compute-optimizer:GetEBSVolumeRecommendations'
+                  - 'compute-optimizer:GetLambdaFunctionRecommendations'
+                  - 'compute-optimizer:GetECSServiceRecommendations'
+                  - 'compute-optimizer:GetRDSDatabaseRecommendations'
+                  - 'compute-optimizer:GetEnrollmentStatus'
+                  - 'compute-optimizer:DescribeRecommendationExportJobs'
+                Resource: '*'
+
+              - Sid: TrustedAdvisorAndCOHRead
+                Effect: Allow
+                Action:
+                  - 'support:DescribeTrustedAdvisorChecks'
+                  - 'support:DescribeTrustedAdvisorCheckResult'
+                  - 'cost-optimization-hub:ListRecommendations'
+                  - 'cost-optimization-hub:GetRecommendation'
+                Resource: '*'
+
+              - !If
+                - CURAccessEnabled
+                - Sid: CURBucketRead
+                  Effect: Allow
+                  Action:
+                    - 's3:GetObject'
+                    - 's3:ListBucket'
+                    - 's3:GetBucketLocation'
+                  Resource:
+                    - !Sub 'arn:aws:s3:::cur-${AWS::AccountId}-*'
+                    - !Sub 'arn:aws:s3:::cur-${AWS::AccountId}-*/*'
+                - !Ref AWS::NoValue
+
+      Tags:
+        - Key: ManagedBy
+          Value: FinOpsPlatform
+        - Key: Pillar
+          Value: A
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: CentralAccountId
+          Value: !Ref CentralAccountId
+
+Outputs:
+  RoleArn:
+    Description: ARN of the FinOps cross-account IAM role. Provide this to the platform team.
+    Value: !GetAtt FinOpsCrossAccountRole.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-RoleArn'
+
+  RoleName:
+    Description: Name of the FinOps cross-account IAM role.
+    Value: !Ref FinOpsCrossAccountRole
+    Export:
+      Name: !Sub '${AWS::StackName}-RoleName'
+
+  AccountId:
+    Description: AWS Account ID where this role was deployed.
+    Value: !Ref AWS::AccountId
+
+  Region:
+    Description: AWS Region where this stack was deployed.
+    Value: !Ref AWS::Region

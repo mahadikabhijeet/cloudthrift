@@ -1,0 +1,5 @@
+# Pillar B — Audit Engine
+boto3>=1.34.0
+pydantic>=2.7.0
+reportlab>=4.1.0           # PDF generation
+anthropic>=0.28.0          # (optional) LLM-assisted finding summaries

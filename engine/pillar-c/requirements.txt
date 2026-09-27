@@ -1,0 +1,5 @@
+# Pillar C — Lead Acquisition Pipeline
+anthropic>=0.28.0          # LLM scoring + email composition
+google-auth>=2.29.0        # Gmail OAuth2
+google-auth-oauthlib>=1.2.0
+google-api-python-client>=2.130.0

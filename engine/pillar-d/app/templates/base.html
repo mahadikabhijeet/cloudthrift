@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }} — FinOps Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#f97316', 600: '#ea580c' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .severity-critical { @apply bg-red-900/40 text-red-300 ring-1 ring-red-700; }
+    .severity-high     { @apply bg-orange-900/40 text-orange-300 ring-1 ring-orange-700; }
+    .severity-medium   { @apply bg-yellow-900/40 text-yellow-300 ring-1 ring-yellow-700; }
+    .severity-low      { @apply bg-blue-900/40 text-blue-300 ring-1 ring-blue-700; }
+    .tier-quick_win    { @apply bg-emerald-900/40 text-emerald-300 ring-1 ring-emerald-700; }
+    .tier-this_month   { @apply bg-indigo-900/40 text-indigo-300 ring-1 ring-indigo-700; }
+    .tier-needs_review { @apply bg-amber-900/40 text-amber-300 ring-1 ring-amber-700; }
+    .tier-later        { @apply bg-gray-800 text-gray-400 ring-1 ring-gray-600; }
+  </style>
+</head>
+<body class="h-full text-gray-100 font-sans">
+
+<!-- Nav -->
+<nav class="bg-gray-900 border-b border-gray-800 px-4 sm:px-6 py-3">
+  <div class="flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 sm:gap-3 group min-w-0">
+      <div class="shrink-0 w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white font-bold text-sm">F</div>
+      <span class="text-base sm:text-lg font-semibold text-white group-hover:text-brand-500 transition-colors truncate">FinOps Platform</span>
+    </a>
+    <div class="flex items-center gap-3 sm:gap-6 text-sm text-gray-400 shrink-0 ml-3">
+      <a href="/" class="hover:text-white transition-colors hidden xs:inline">Dashboard</a>
+      <a href="/api/docs" class="hover:text-white transition-colors hidden sm:inline">API</a>
+      <span class="px-2 py-0.5 rounded bg-gray-800 text-xs text-green-400 font-mono">v1.0</span>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-3 sm:px-6 py-5 sm:py-8">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="text-center text-xs text-gray-600 py-6 border-t border-gray-800 mt-8 sm:mt-12">
+  FinOps Platform &mdash; Cloud Cost Optimisation
+</footer>
+
+</body>
+</html>

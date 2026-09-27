@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% set summary = report.get('summary', {}) %}
+{% set by_sev = summary.get('by_severity', {}) %}
+{% set by_cat = summary.get('by_category', {}) %}
+{% set by_tier = summary.get('by_priority_tier', {}) %}
+{% set acct_id = report.get('account_id', '') %}
+{% set acct_name = report.get('account_name', acct_id) %}
+
+<!-- Breadcrumb + header -->
+<div class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6 min-w-0">
+  <a href="/" class="hover:text-white transition-colors shrink-0">Dashboard</a>
+  <span>›</span>
+  <span class="text-gray-300 truncate">{{ acct_name }}</span>
+</div>
+
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+  <div class="min-w-0">
+    <h1 class="text-xl sm:text-2xl font-bold text-white truncate">{{ acct_name }}</h1>
+    <p class="text-gray-400 text-xs mt-1 font-mono truncate">{{ acct_id }} · {{ report.get('generated_at','')[:10] }}</p>
+  </div>
+  <button
+    onclick="triggerAudit('{{ acct_id }}')"
+    class="px-4 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium transition-colors self-start sm:self-auto shrink-0"
+  >↻ Re-run Audit</button>
+</div>
+
+<!-- Summary cards -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+  <div class="bg-green-950 rounded-xl border border-green-800 p-4 sm:p-5 col-span-2 sm:col-span-1">
+    <p class="text-xs text-green-500 uppercase tracking-wider mb-1">Monthly Savings</p>
+    <p class="text-2xl sm:text-3xl font-bold text-green-400">${{ "{:,.0f}".format(summary.get('total_monthly_savings_usd', 0)) }}</p>
+    <p class="text-xs text-green-600 mt-1">${{ "{:,.0f}".format(summary.get('total_monthly_savings_usd', 0) * 12) }} annually</p>
+  </div>
+  {% for sev, label, cls in [('critical','Critical','red'), ('high','High','orange'), ('medium','Medium','yellow'), ('low','Low','blue')] %}
+  {% if by_sev.get(sev, 0) %}
+  <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 cursor-pointer hover:border-{{ cls }}-600 hover:bg-gray-800 transition-colors"
+       onclick="setSevFilter('{{ sev }}')">
+    <p class="text-xs text-{{ cls }}-400 uppercase tracking-wider mb-1">{{ label }}</p>
+    <p class="text-3xl font-bold text-{{ cls }}-300">{{ by_sev.get(sev, 0) }}</p>
+    <p class="text-xs text-gray-500 mt-1">findings — click to filter</p>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+<!-- Priority tier breakdown -->
+{% if by_tier %}
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+  {% set tier_labels = {
+    'quick_win': 'Quick Wins',
+    'this_month': 'This Month',
+    'needs_review': 'Needs Review',
+    'later': 'Later'
+  } %}
+  {% for tier, label in tier_labels.items() %}
+  {% if by_tier.get(tier, 0) %}
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-emerald-600 hover:bg-gray-800 transition-colors"
+       onclick="setTierFilter('{{ tier }}')">
+    <p class="text-xs text-gray-500 mb-1">{{ label }}</p>
+    <p class="text-xl font-bold text-white">{{ by_tier.get(tier, 0) }}</p>
+    <span class="mt-1 inline-block px-2 py-0.5 rounded text-xs font-medium tier-{{ tier }}">{{ tier.replace('_', ' ') }}</span>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Category breakdown -->
+{% if by_cat %}
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+  {% set cat_labels = {
+    'infra_hygiene':    'Infra Hygiene',
+    'compute_strategy': 'Compute',
+    'network_storage':  'Network & Storage',
+    'database_tuning':  'Database',
+    'savings_plans':    'Savings Plans'
+  } %}
+  {% for cat, info in by_cat.items() %}
+  {% if info.count %}
+  <div class="bg-gray-900 rounded-lg border border-gray-800 p-4 cursor-pointer hover:border-indigo-600 hover:bg-gray-800 transition-colors"
+       onclick="setCatFilter('{{ cat }}')">
+    <p class="text-xs text-gray-500 mb-1">{{ cat_labels.get(cat, cat) }}</p>
+    <p class="text-xl font-bold text-white">{{ info.count }}</p>
+    {% if info.savings_usd %}
+    <p class="text-xs text-green-500 mt-0.5">${{ "{:,.0f}".format(info.savings_usd) }}/mo</p>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Findings table -->
+<div class="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+  <div class="px-6 py-4 border-b border-gray-800 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+    <h2 class="font-semibold text-white">Findings <span class="text-gray-500 font-normal text-sm">({{ findings | length }})</span></h2>
+    <!-- Filters -->
+    <div class="flex gap-2 flex-wrap">
+      <select id="sev-filter" onchange="filterFindings()"
+        class="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-300 focus:outline-none">
+        <option value="">All severities</option>
+        <option value="critical">Critical</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <select id="cat-filter" onchange="filterFindings()"
+        class="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-300 focus:outline-none">
+        <option value="">All categories</option>
+        <option value="infra_hygiene">Infra Hygiene</option>
+        <option value="compute_strategy">Compute</option>
+        <option value="network_storage">Network & Storage</option>
+        <option value="database_tuning">Database</option>
+        <option value="savings_plans">Savings Plans</option>
+      </select>
+      <select id="tier-filter" onchange="filterFindings()"
+        class="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-300 focus:outline-none">
+        <option value="">All priorities</option>
+        <option value="quick_win">Quick Win</option>
+        <option value="this_month">This Month</option>
+        <option value="needs_review">Needs Review</option>
+        <option value="later">Later</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="findings-list" class="divide-y divide-gray-800">
+    {% for f in findings %}
+    {% set tier = f.metadata.get('priority_tier', 'later') if f.metadata else 'later' %}
+    {% set source = f.metadata.get('source', 'custom') if f.metadata else 'custom' %}
+    <div class="finding-row px-6 py-4 hover:bg-gray-800/40 transition-colors"
+         data-severity="{{ f.severity }}"
+         data-category="{{ f.category }}"
+         data-tier="{{ tier }}">
+      <div class="flex items-start gap-4">
+        <!-- Severity badge -->
+        <span class="mt-0.5 shrink-0 px-2 py-0.5 rounded text-xs font-semibold severity-{{ f.severity }} uppercase">
+          {{ f.severity[:4] }}
+        </span>
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <button
+              onclick="toggleDetail('{{ loop.index }}')"
+              class="text-left font-medium text-white hover:text-brand-500 transition-colors text-sm"
+            >{{ f.title }}</button>
+            {% if f.estimated_monthly_savings_usd > 0 %}
+            <span class="text-green-400 text-sm font-semibold shrink-0">
+              ${{ "{:,.2f}".format(f.estimated_monthly_savings_usd) }}/mo
+            </span>
+            {% endif %}
+          </div>
+          <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-500">
+            <span class="px-2 py-0.5 rounded tier-{{ tier }}">{{ tier.replace('_', ' ') }}</span>
+            {% if source != 'custom' %}
+            <span class="px-2 py-0.5 rounded bg-gray-800 text-gray-400">{{ source }}</span>
+            {% endif %}
+            {% if f.metadata and f.metadata.get('priority_score') %}
+            <span>score {{ f.metadata.get('priority_score') }}</span>
+            {% endif %}
+            <span>{{ f.service }}</span>
+            <span>·</span>
+            <span>{{ f.region }}</span>
+            <span>·</span>
+            <span class="font-mono">{{ f.resource_id[:40] }}{% if f.resource_id | length > 40 %}…{% endif %}</span>
+          </div>
+          <!-- Expandable detail -->
+          <div id="detail-{{ loop.index }}" class="hidden mt-3 space-y-3">
+            <p class="text-sm text-gray-300 leading-relaxed">{{ f.description }}</p>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <p class="text-xs text-brand-500 font-semibold uppercase mb-1">Recommendation</p>
+              <p class="text-sm text-gray-200">{{ f.recommendation }}</p>
+            </div>
+            {% if f.metadata and f.metadata.get('runbook') %}
+            <div class="bg-gray-950 rounded-lg border border-gray-700 p-3">
+              <p class="text-xs text-emerald-500 font-semibold uppercase mb-2">Runbook</p>
+              <ol class="list-decimal list-inside space-y-1">
+                {% for step in f.metadata.get('runbook', []) %}
+                <li class="text-xs font-mono text-gray-300 break-all">{{ step }}</li>
+                {% endfor %}
+              </ol>
+            </div>
+            {% endif %}
+            {% if f.metadata %}
+            <details class="group">
+              <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors">
+                Metadata ({{ f.metadata | length }} keys)
+              </summary>
+              <pre class="mt-2 bg-gray-800 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto leading-relaxed">{{ f.metadata | tojson(indent=2) }}</pre>
+            </details>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="px-6 py-12 text-center text-gray-500">No findings match the current filters.</div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Job status toast -->
+<div id="toast" class="hidden fixed bottom-6 right-6 bg-gray-800 border border-gray-700 rounded-xl px-5 py-3 text-sm text-gray-200 shadow-xl max-w-sm font-mono"></div>
+
+<script>
+function toggleDetail(idx) {
+  const el = document.getElementById('detail-' + idx);
+  el.classList.toggle('hidden');
+}
+
+function filterFindings() {
+  const sev = document.getElementById('sev-filter').value;
+  const cat = document.getElementById('cat-filter').value;
+  const tier = document.getElementById('tier-filter').value;
+  document.querySelectorAll('.finding-row').forEach(row => {
+    const sevOk = !sev || row.dataset.severity === sev;
+    const catOk = !cat || row.dataset.category === cat;
+    const tierOk = !tier || row.dataset.tier === tier;
+    row.style.display = sevOk && catOk && tierOk ? '' : 'none';
+  });
+}
+
+function setTierFilter(tier) {
+  const el = document.getElementById('tier-filter');
+  el.value = el.value === tier ? '' : tier;
+  filterFindings();
+}
+
+function setSevFilter(sev) {
+  const el = document.getElementById('sev-filter');
+  el.value = el.value === sev ? '' : sev;
+  filterFindings();
+  document.querySelector('.finding-row')?.closest('div')?.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function setCatFilter(cat) {
+  const el = document.getElementById('cat-filter');
+  el.value = el.value === cat ? '' : cat;
+  filterFindings();
+  document.querySelector('.finding-row')?.closest('div')?.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 5000);
+}
+
+async function triggerAudit(accountId) {
+  showToast('Queuing audit for ' + accountId + ' (mock mode)...');
+  try {
+    const resp = await fetch('/api/accounts/' + accountId + '/run-audit?mock=true', {method: 'POST'});
+    const data = await resp.json();
+    showToast('Job ' + data.job_id + ' running...');
+    const poll = setInterval(async () => {
+      const jr = await fetch('/api/jobs/' + data.job_id);
+      const job = await jr.json();
+      if (['succeeded','failed'].includes(job.status)) {
+        clearInterval(poll);
+        showToast('Audit ' + job.status + '. Refreshing in 2s...');
+        if (job.status === 'succeeded') setTimeout(() => location.reload(), 2000);
+      }
+    }, 2500);
+  } catch(e) {
+    showToast('Error: ' + e);
+  }
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,4 @@
+company,website,funding_stage,employee_count,aws_signal,confidence,notes
+Acme Corp,https://acme.com,Series B,~80,ECS + RDS in job posts,high,CTO John Smith - linkedin.com/in/johnsmith
+Example SaaS,https://example.io,Series A,~40,Lambda + DynamoDB mentioned in blog,medium,
+Placeholder Inc,,Series C,150-200,unknown,,Found via TechCrunch article

@@ -1,0 +1,6 @@
+# Research output — contains personal contact data, never commit
+output/
+leads.csv
+
+# Keep the template
+!leads_template.csv

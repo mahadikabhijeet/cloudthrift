@@ -1,0 +1,2 @@
+# Generated audit report files (mounted as a volume in production)
+data/*.json
