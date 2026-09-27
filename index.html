@@ -3,42 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudThrift - Stop Bleeding Cloud Cash</title>
+    <title>CloudThrift | Open Source FinOps Engine</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; text-align: center; padding: 50px; }
-        h1 { font-size: 3rem; color: #00ff88; text-transform: uppercase; font-weight: 900; }
-        .subhead { font-size: 1.5rem; margin-bottom: 40px; }
-        .offer-box { border: 3px solid #ff0055; padding: 40px; border-radius: 10px; background: #1a1a1a; max-width: 800px; margin: 0 auto; }
-        .btn { display: inline-block; padding: 20px 40px; font-size: 1.5rem; font-weight: bold; background: #00ff88; color: #000; text-decoration: none; border-radius: 5px; text-transform: uppercase; margin-top: 20px; }
-        .btn:hover { background: #00cc6a; }
-        .code-block { background: #000; padding: 20px; border-radius: 5px; color: #00ff88; font-family: monospace; text-align: left; margin: 20px 0; }
-        .guarantee { color: #ff0055; font-weight: bold; font-size: 1.2rem; margin-top: 20px; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #0f1115; color: #e1e4e8; max-width: 900px; margin: 0 auto; padding: 50px 20px; line-height: 1.6; }
+        h1 { font-size: 2.5rem; color: #58a6ff; font-weight: 600; margin-bottom: 10px; }
+        .subhead { font-size: 1.25rem; color: #8b949e; margin-bottom: 40px; }
+        .code-block { background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 6px; font-family: ui-monospace, monospace; text-align: left; margin: 30px 0; color: #c9d1d9; }
+        .code-comment { color: #8b949e; }
+        .highlight { color: #79c0ff; }
+        .box { border: 1px solid #30363d; padding: 30px; border-radius: 6px; background: #0d1117; margin-bottom: 30px; }
+        h2 { font-size: 1.5rem; color: #c9d1d9; margin-top: 0; }
+        .btn { display: inline-block; padding: 12px 24px; font-size: 1rem; font-weight: 600; background: #238636; color: #ffffff; text-decoration: none; border-radius: 6px; border: 1px solid rgba(240,246,252,0.1); }
+        .btn:hover { background: #2ea043; }
+        .btn-outline { background: transparent; border: 1px solid #8b949e; color: #c9d1d9; margin-left: 10px; }
+        .btn-outline:hover { border-color: #c9d1d9; }
     </style>
 </head>
 <body>
 
-    <h1>I Will Slash Your AWS Bill By 20% In 14 Days...<br>Or You Pay Absolutely Nothing.</h1>
-    <p class="subhead">If you're a funded startup spending over $5k/mo on AWS, you are bleeding cash. <br>And you know it.</p>
+    <h1>CloudThrift</h1>
+    <p class="subhead">Deploy in 15 minutes. Automatically identify 20%+ in idle cloud waste without modifying your application code.</p>
 
-    <div class="offer-box">
-        <h2>STEP 1: Run The Free Open-Source Engine</h2>
-        <p>I built an open-source AI engine that finds exact cost leaks. It's 100% free. No sales calls. Run it locally via your own CLI.</p>
-        <div class="code-block">
-            $ git clone https://github.com/mahadikabhijeet/cloudthrift.git<br>
-            $ cd cloudthrift/engine && ./bootstrap.sh
-        </div>
-        
-        <h2>STEP 2: We Fix It For You (The Grand Slam Offer)</h2>
-        <p>The script will tell you exactly where you're losing money. But if you're a CTO, you don't have the sprint bandwidth to actually implement the architectural fixes (migrating to Spot, resizing RDS, fixing S3 lifecycles).</p>
-        <p><strong>That's where we come in.</strong></p>
-        <p>Hand us the JSON report. We will securely execute the implementation. We charge a flat fee, and if we don't save you more than you paid us in the first 90 days, we refund every penny.</p>
-        
-        <p class="guarantee">⚠️ WARNING: We only take 4 implementation clients per month to guarantee results. 3 spots remaining for October.</p>
-        
-        <a href="mailto:hello@cloudthrift.io" class="btn">Book Your Remediation Call</a>
+    <div class="code-block">
+        <span class="code-comment"># 1. Clone the open-source detection engine</span><br>
+        $ git clone https://github.com/mahadikabhijeet/cloudthrift.git<br><br>
+        <span class="code-comment"># 2. Run securely locally via your existing read-only AWS credentials</span><br>
+        $ cd cloudthrift/engine && ./cloudthrift-audit --profile prod<br><br>
+        <span class="highlight">>> Output: Found $14,200/mo in idle EC2, unattached EBS, and S3 lifecycle misses.</span>
     </div>
 
-    <p style="margin-top: 50px; color: #888;">*CloudThrift is now an Open Source project powered by the CloudThrift MCP AI Agent.*</p>
+    <div class="box">
+        <h2>Why CloudThrift?</h2>
+        <p>Unlike other post-deployment scanners, CloudThrift provides a <strong>Python MCP Server</strong> that integrates directly with local AI agents (like Claude Desktop) to parse the JSON output and generate the exact Terraform/CLI remediation scripts.</p>
+        <p>It runs 100% locally. We do not ask for cross-account IAM roles. We do not touch your production state.</p>
+    </div>
+    
+    <div class="box">
+        <h2>Remediation-as-a-Service</h2>
+        <p>The open-source engine tells you exactly what is bleeding money. The hard part is the engineering sprint required to safely untangle the infrastructure and apply the fixes.</p>
+        <p>If your team doesn't have the sprint bandwidth to execute the remediation, we offer a done-for-you engineering service. We charge a flat fee, or a performance fee based purely on realized savings.</p>
+        <div style="margin-top: 25px;">
+            <a href="mailto:hello@cloudthrift.io" class="btn">Book Implementation Call</a>
+            <a href="https://github.com/mahadikabhijeet/cloudthrift" class="btn btn-outline">View on GitHub</a>
+        </div>
+    </div>
 
 </body>
 </html>
