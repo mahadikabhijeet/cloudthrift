@@ -91,13 +91,12 @@ pip install --upgrade pip --quiet
 
 step "Installing Python dependencies"
 
-pip install -r "${REPO_ROOT}/pillar-b/requirements.txt" --quiet
-ok "pillar-b (audit engine)"
+pip install -r "${REPO_ROOT}/src/requirements.txt" --quiet
+ok "src (audit engine)"
 
-pip install -r "${REPO_ROOT}/pillar-d/requirements.txt" --quiet
-ok "pillar-d (dashboard)"
+pip install -r "${REPO_ROOT}/dashboard/requirements.txt" --quiet
+ok "dashboard (dashboard)"
 
-pip install -r "${REPO_ROOT}/pillar-c/requirements.txt" --quiet 2>/dev/null && ok "pillar-c (lead pipeline)" || warn "pillar-c/requirements.txt not found — skipping"
 
 # ==============================================================================
 # 3. Environment file
@@ -123,11 +122,11 @@ fi
 # ==============================================================================
 step "Accounts configuration (accounts.json)"
 
-ACCOUNTS_FILE="${REPO_ROOT}/pillar-a/accounts.json"
+ACCOUNTS_FILE="${REPO_ROOT}/infra/accounts.json"
 if [[ -f "$ACCOUNTS_FILE" ]]; then
   ok "accounts.json already exists"
 else
-  cp "${REPO_ROOT}/pillar-a/accounts.example.json" "$ACCOUNTS_FILE"
+  cp "${REPO_ROOT}/infra/accounts.example.json" "$ACCOUNTS_FILE"
   chmod 600 "$ACCOUNTS_FILE"
   warn "accounts.json created from template — fill in your role ARNs and external IDs:"
   echo ""
@@ -142,8 +141,8 @@ fi
 # 5. Data directory for dashboard
 # ==============================================================================
 step "Dashboard data directory"
-mkdir -p "${REPO_ROOT}/pillar-d/data"
-ok "pillar-d/data/ ready"
+mkdir -p "${REPO_ROOT}/dashboard/data"
+ok "dashboard/data/ ready"
 
 # ==============================================================================
 # 6. Smoke test
@@ -151,11 +150,11 @@ ok "pillar-d/data/ ready"
 step "Smoke test (mock audit)"
 
 cd "${REPO_ROOT}"
-python pillar-b/engine/main.py --mock --account-id bootstrap-test --output json --output-dir /tmp/finops-bootstrap 2>&1 | grep -E 'findings|savings|Done|ERROR' || true
+python src/engine/main.py --mock --account-id bootstrap-test --output json --output-dir /tmp/finops-bootstrap 2>&1 | grep -E 'findings|savings|Done|ERROR' || true
 
 if ls /tmp/finops-bootstrap/dashboard_bootstrap-test_*.json &>/dev/null 2>&1; then
-  cp /tmp/finops-bootstrap/dashboard_bootstrap-test_*.json "${REPO_ROOT}/pillar-d/data/"
-  ok "Mock audit succeeded — report in pillar-d/data/"
+  cp /tmp/finops-bootstrap/dashboard_bootstrap-test_*.json "${REPO_ROOT}/dashboard/data/"
+  ok "Mock audit succeeded — report in dashboard/data/"
 else
   warn "Smoke test did not produce output — check errors above"
 fi
@@ -172,13 +171,13 @@ echo " Activate the venv in new terminal sessions:"
 echo "   source .venv/bin/activate"
 echo ""
 echo " Start the dashboard:"
-echo "   cd pillar-d"
+echo "   cd dashboard"
 echo "   DATA_DIR=data python -m uvicorn app.main:app --port 8000"
 echo ""
 echo " Run audit against your accounts:"
-echo "   # Fill in pillar-a/accounts.json first"
-echo "   python pillar-b/run_all_accounts.py --dry-run"
-echo "   python pillar-b/run_all_accounts.py --env prod --workers 4"
+echo "   # Fill in infra/accounts.json first"
+echo "   python src/run_all_accounts.py --dry-run"
+echo "   python src/run_all_accounts.py --env prod --workers 4"
 echo ""
 echo " Read the full guide:"
 echo "   cat INSTRUCTIONS.md"
