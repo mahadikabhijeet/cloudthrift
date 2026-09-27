@@ -1,23 +1,24 @@
 # CloudThrift FinOps Engine — Open Source Specification
 
 ## The Vision
-CloudThrift is an automated, read-only AWS audit engine. It scans cloud environments across 5 key pillars to identify cost leaks, idle resources, and over-provisioned infrastructure.
-
-By open-sourcing the core engine, we allow the community to continuously add new AWS/GCP checks, while we monetize through enterprise deployment consulting, premium hosted dashboards, and bespoke FinOps audits.
+CloudThrift is an automated, read-only AWS audit engine. It scans cloud environments to identify cost leaks, idle resources, and over-provisioned infrastructure. 
+**GTM Strategy:** We give away the detection engine for free (bypassing CTO security friction). We monetize through "Remediation-as-a-Service"—charging to actually execute the architectural fixes.
 
 ## Core Architecture
-*   **Language:** Python 3.11+
+*   **Language:** Python 3.11+ (CLI tool)
 *   **Cloud SDK:** Boto3 (AWS)
-*   **Execution:** CLI tool (runs locally or in CI/CD)
-*   **Security:** Strictly Read-Only IAM cross-account role (`arn:aws:iam::aws:policy/SecurityAudit` + `arn:aws:iam::aws:policy/ViewOnlyAccess`).
-*   **Output:** JSON report mapped to specific resource ARNs with estimated monthly savings.
+*   **Execution:** Runs locally via `~/.aws/credentials` (Zero-friction onboarding).
+*   **Security:** Strictly Read-Only IAM (`SecurityAudit` + `ViewOnlyAccess`). **Jules AI Constraint:** The AI agent is strictly forbidden from writing rules that modify state.
+*   **Output:** JSON report mapped to specific resource ARNs with estimated monthly savings. *Must include a call-to-action link to book Remediation-as-a-Service.*
+
+## ⚠️ Enterprise Constraints (Architect Mandates)
+Before writing any modular scanners, the core framework must implement:
+1.  **Central Data Fetcher (No N+1 API Abuse):** Do not let individual modules query AWS. The core engine must fetch all EC2/S3 resources once, cache them in memory, and pass them to the rules.
+2.  **Concurrency & Throttle Limits:** Use `aioboto3` or ThreadPoolExecutors. Configure exponential backoff (`max_attempts: 10`) to prevent `ThrottlingException` on large fleets.
+3.  **Explicit Account/Region Loops:** The engine must dynamically query `ec2:DescribeRegions` and loop over them.
 
 ## Modularity (The Contributor Model)
-The engine is built around isolated "Check Modules" so open-source contributors can easily add new rules without touching the core framework.
-
-### Phase 1 Modules (MVP)
+Once the core fetcher is built, implement the following rule modules:
 1.  **Orphaned EBS Volumes:** Detect unattached (`available`) EBS volumes.
 2.  **Idle EC2 Instances:** Detect instances with <5% CPU utilization over 7 days.
-3.  **Unassociated Elastic IPs:** Detect EIPs not attached to running instances.
-4.  **Legacy RDS Instances:** Detect previous-generation instance types (e.g., `db.t2`).
-5.  **S3 Lifecycle Missing:** Detect large buckets without transition rules to Infrequent Access.
+3.  **S3 Lifecycle Missing:** Use CloudWatch `BucketSizeBytes` metric (NOT S3 APIs) to find large buckets missing transitions.
