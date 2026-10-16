@@ -1,0 +1,27 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWS fix pack | CloudThrift</title><meta name="description" content="Send a Cost Explorer export, get ready-to-run fixes for AWS waste in 48 hours. $299, no account access.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Google Ads conversion tag goes here once the account is set up -->
+</head><body><div class="wrap"><header class="top"><a class="brand" href="index.html">CloudThrift</a><nav><a href="index.html">AWS</a><a href="ai.html">AI APIs</a></nav></header>
+<section class="hero"><h1>Your AWS bill keeps growing. Get the fixes, not another report.</h1><p class="lead">Send us a Cost Explorer export. Within 48 hours you get a fix pack for the waste we find, with the exact commands and settings your team can apply in an afternoon. We never touch your account.</p>
+<div class="pricebar"><div data-pay="aws" data-label="Get my fix pack ($299)"></div><span class="price"><b>$299</b> one time · delivered within 48 hours</span></div></section>
+<div class="card sample"><span class="tag">Sample entry from a fix pack</span>
+<div class="row"><span>12 unattached EBS volumes in us-east-1</span><span class="save">saves $XX/mo</span></div>
+<pre># list, review, then delete unattached volumes
+aws ec2 describe-volumes --region us-east-1 \
+  --filters Name=status,Values=available \
+  --query "Volumes[].{ID:VolumeId,GB:Size,Created:CreateTime}"</pre></div>
+<h2>What we look for</h2><ul class="ticks"><li>Old snapshots and unattached volumes nobody remembers creating</li><li>Dev and staging servers running nights and weekends</li><li>gp2 volumes that should be gp3</li><li>Idle load balancers, unused Elastic IPs and forgotten environments</li><li>S3 data sitting in the wrong storage class</li><li>Savings Plans and Reserved Instances: what to buy, and how much</li><li>NAT and cross-zone traffic that quietly adds up</li></ul>
+<h2>What you get</h2><ul class="ticks"><li>Every finding ranked by monthly savings, calculated from your own numbers</li><li>Ready-to-run CLI commands or Terraform snippets for each fix</li><li>A short list of bigger changes we spotted but did not include, and why</li></ul>
+<h2>Price and guarantee</h2><p><b>$299, one time.</b> No subscription, no call needed.</p>
+<p class="guarantee">If the fixes we find add up to less than 3x the fee over a year, you get a full refund. <a href="refunds.html">How refunds work</a>.</p>
+<h2>How it works</h2><ol class="steps"><li>Pay securely</li><li>Email your Cost Explorer export (a 60-second guide arrives after payment)</li><li>Get your fix pack within 48 hours</li></ol>
+<h2>Who does the work</h2><p>Abhijeet Mahadik, Senior Staff CloudOps engineer with 7+ years running AWS at petabyte scale across 18+ regions.</p>
+<h2>Questions</h2><details><summary>Do you need access to my AWS account?</summary><p>No. You send an export file. Nothing else.</p></details><details><summary>Who is this for?</summary><p>Teams spending around $2,000 or more a month on AWS. Below that, the guarantee is hard to meet.</p></details><details><summary>Will you change anything in my account?</summary><p>No. Your team applies the fixes.</p></details><details><summary>Is this a security audit?</summary><p>No. It is about cost only.</p></details>
+<section class="final"><h2 style="margin-top:0">Ready to see what is hiding in your bill?</h2><div data-pay="aws" data-label="Get my fix pack ($299)"></div></section>
+</div><footer><div class="wrap">
+<p>CloudThrift is operated by Abhijeet Mahadik, sole proprietor, Pune, Maharashtra 411023, India. Contact: <a href="mailto:abhijeet@cloudthrift.io">abhijeet@cloudthrift.io</a></p>
+<p><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="refunds.html">Refunds</a><a href="shipping.html">Delivery</a><a href="index.html">AWS fix pack</a><a href="ai.html">AI bill fix pack</a></p>
+</div></footer>
+<script src="config.js"></script><script src="pay.js"></script></body></html>

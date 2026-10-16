@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thank you | CloudThrift</title><meta name="description" content="Next steps">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Google Ads conversion tag goes here once the account is set up -->
+</head><body><div class="wrap"><header class="top"><a class="brand" href="index.html">CloudThrift</a><nav><a href="index.html">AWS</a><a href="ai.html">AI APIs</a></nav></header><main class="legal">
+<h1>Thank you. Here is what to send.</h1>
+<p class="lead">Email your files to <a href="mailto:abhijeet@cloudthrift.io">abhijeet@cloudthrift.io</a> with your payment ID in the subject: <b id="pid">see your Razorpay receipt</b></p>
+<div class="card"><h2 style="margin-top:0">AWS fix pack: export in about a minute</h2>
+<ol class="steps"><li>Open the AWS console, go to Billing and Cost Management, then Cost Explorer.</li><li>Set the date range to the last 3 months and granularity to Monthly.</li><li>Group by Service. Click Download CSV.</li><li>Change Group by to Usage type. Download CSV again.</li><li>Optional but helpful: tell us your main regions and which accounts are production.</li></ol></div>
+<div class="card" style="margin-top:16px"><h2 style="margin-top:0">AI bill fix pack: what to send</h2>
+<ol class="steps"><li>OpenAI or Anthropic: open the usage page in the console and export the last 1 to 3 months as CSV.</li><li>Bedrock: in AWS Cost Explorer, filter Service to Bedrock, group by Usage type, download CSV.</li><li>5 to 10 sample requests (prompt and settings) with any private data removed, and one line on what each job does.</li></ol></div>
+<p>Never send passwords, access keys or API keys. Your fix pack arrives within 48 hours of receiving complete data.</p>
+<script>var p=new URLSearchParams(location.search).get("razorpay_payment_id")||new URLSearchParams(location.search).get("payment_id");if(p)document.getElementById("pid").textContent=p;</script>
+</main></div><footer><div class="wrap">
+<p>CloudThrift is operated by Abhijeet Mahadik, sole proprietor, Pune, Maharashtra 411023, India. Contact: <a href="mailto:abhijeet@cloudthrift.io">abhijeet@cloudthrift.io</a></p>
+<p><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="refunds.html">Refunds</a><a href="shipping.html">Delivery</a><a href="index.html">AWS fix pack</a><a href="ai.html">AI bill fix pack</a></p>
+</div></footer>
+<script src="config.js"></script><script src="pay.js"></script></body></html>
